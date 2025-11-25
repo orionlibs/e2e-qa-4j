@@ -1,0 +1,25 @@
+name: "Test1"
+testcases:
+  - name: executor1
+    steps:
+      - type: executor1
+        input:
+          input1: "input1var {{institutionId}}"
+        vars:
+          var1: result.output1
+          var2: result.uuid
+        assertions:
+          - result.var1 ShouldEqual hello
+        info:
+          - 'status code is {{result.statusCode}}'
+          - 'test executor info'
+
+  - name: executor2
+    steps:
+      - type: executor2
+        input:
+          var1: '{{executor1.var1}}'
+          var2: '{{executor1.var2}}'
+        vars:
+          var3: result.var3
+          var4: result.var4

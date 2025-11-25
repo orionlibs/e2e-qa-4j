@@ -1,0 +1,103 @@
+name: Redis testsuite
+vars:
+  redisHost: 'localhost'
+  redisPort: '16379'    
+  redis.dialURL: "redis://{{.redisHost}}:{{.redisPort}}/0"
+
+testcases:
+- name: Commands_Test_Case
+  description: Test commands property
+  steps:
+  - type: redis
+    commands:
+        - FLUSHALL
+
+  - type: redis
+    commands:
+        - SET foo bar
+        - GET foo
+        - KEYS *
+    assertions:
+        - result.commands.commands0.response ShouldEqual OK
+        - result.commands.commands1.response ShouldEqual bar
+        - result.commands.commands2.response.response0 ShouldEqual foo
+
+- name: File_Test_Case
+  steps:
+  - type: redis
+    redis.dialURL: "redis://{{.redisHost}}:{{.redisPort}}/0"
+    commands:
+        - FLUSHALL
+
+  - type: redis
+    path: redis/testredis/commands.txt
+    redis.dialURL: "redis://{{.redisHost}}:{{.redisPort}}/0"
+    assertions:
+        - result.commands.commands0.response ShouldEqual OK
+        - result.commands.commands1.response ShouldEqual bar
+        - result.commands.commands2.response.response0 ShouldEqual foo
+        - result.commands.commands3.response ShouldEqual OK
+        - result.commands.commands4.response ShouldEqual {"test":"go o"}
+
+- name: Long_Value_File_Test_Case
+  steps:
+    - type: redis
+      redis.dialURL: "redis://{{.redisHost}}:{{.redisPort}}/0"
+      commands:
+        - FLUSHALL
+
+    - type: redis
+      path: redis/testredis/very_long_value.txt
+      redis.dialURL: "redis://{{.redisHost}}:{{.redisPort}}/0"
+      assertions:
+        - result.commands.commands0.response ShouldEqual OK
+
+- name: Commands_Nested_Array_Response_Test_Case
+  steps:
+  - type: redis
+    commands:
+        - FLUSHALL
+
+  - type: redis
+    commands:
+        - XADD testStream * field1 value1 field2 value2
+        - XADD testStream * field3 value3 field4 value4
+    vars:
+      streamEntry1ID:
+        from: result.commands.commands0.response
+      streamEntry2ID:
+        from: result.commands.commands1.response
+    info:
+        - "streamEntry1ID: {{.result.commands.commands0.response}}"
+        - "streamEntry2ID: {{.result.commands.commands1.response}}"
+
+  - type: redis
+    commands:
+        - XREAD COUNT 2 STREAMS testStream 0-0
+    assertions:
+        - result.commands.commands0.response.response0.response00 ShouldEqual testStream
+        - "result.commands.commands0.response.response0.response01.response010.response0100 ShouldEqual {{.Commands_Nested_Array_Response_Test_Case.streamEntry1ID}}"
+        - result.commands.commands0.response.response0.response01.response010.response0101.response01010 ShouldEqual field1
+        - result.commands.commands0.response.response0.response01.response010.response0101.response01011 ShouldEqual value1
+        - result.commands.commands0.response.response0.response01.response010.response0101.response01012 ShouldEqual field2
+        - result.commands.commands0.response.response0.response01.response010.response0101.response01013 ShouldEqual value2
+        - "result.commands.commands0.response.response0.response01.response011.response0110 ShouldEqual {{.Commands_Nested_Array_Response_Test_Case.streamEntry2ID}}"
+        - result.commands.commands0.response.response0.response01.response011.response0111.response01110 ShouldEqual field3
+        - result.commands.commands0.response.response0.response01.response011.response0111.response01111 ShouldEqual value3
+        - result.commands.commands0.response.response0.response01.response011.response0111.response01112 ShouldEqual field4
+        - result.commands.commands0.response.response0.response01.response011.response0111.response01113 ShouldEqual value4
+
+  - type: redis
+    commands:
+        - XRANGE testStream - +
+    assertions:
+        - "result.commands.commands0.response.response0.response00 ShouldEqual {{.Commands_Nested_Array_Response_Test_Case.streamEntry1ID}}"
+        - result.commands.commands0.response.response0.response01.response010 ShouldEqual field1
+        - result.commands.commands0.response.response0.response01.response011 ShouldEqual value1
+        - result.commands.commands0.response.response0.response01.response012 ShouldEqual field2
+        - result.commands.commands0.response.response0.response01.response013 ShouldEqual value2
+        - "result.commands.commands0.response.response1.response10 ShouldEqual {{.Commands_Nested_Array_Response_Test_Case.streamEntry2ID}}"
+        - result.commands.commands0.response.response1.response11.response110 ShouldEqual field3
+        - result.commands.commands0.response.response1.response11.response111 ShouldEqual value3
+        - result.commands.commands0.response.response1.response11.response112 ShouldEqual field4
+        - result.commands.commands0.response.response1.response11.response113 ShouldEqual value4

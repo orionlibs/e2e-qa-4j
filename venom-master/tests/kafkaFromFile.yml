@@ -1,0 +1,34 @@
+name: Kafka test suite with value from file
+version: "2"
+testcases:
+- name: Kafka test with value from file
+  description: Test kafka with value from file
+  steps:
+  - type: kafka
+    clientType: producer
+    withSASL: false
+    withTLS: false
+    user: "{{.kafkaUser}}"
+    password: "{{.kafkaPwd}}"
+    addrs:
+      - "{{.kafkaHost}}:{{.kafkaPort}}"
+    messages:
+      - topic: test-topic-with-file
+        valueFile: 'kafka/values/hello.json'
+  - type: kafka
+    clientType: consumer
+    withTLS: false
+    withSASL: false
+    user: "{{.kafkaUser}}"
+    password: "{{.kafkaPwd}}"
+    markOffset: true
+    initialOffset: oldest
+    messageLimit: 1
+    groupID: venom
+    addrs:
+      - "{{.kafkaHost}}:{{.kafkaPort}}"
+    topics:
+      - test-topic-with-file
+    assertions:
+    - result.messagesjson.messagesjson0.Value.hello ShouldEqual bar
+    - result.messages.__Len__ ShouldEqual 1

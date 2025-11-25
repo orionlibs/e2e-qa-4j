@@ -1,0 +1,43 @@
+name: TestSuite Web
+vars:
+  web:
+    driver: gecko
+    width: 1920
+    height: 1080
+    # driver: chrome
+    # args:
+    #   - "--headless"
+    #   - "--no-sandbox"
+    #   - "--disable-dev-shm-usage"
+    #   - "--disable-gpu"
+    #   - "--whitelisted-ips"
+    #   - "--detach"
+testcases:
+- name: TestCase Get URL and check title
+  steps:
+  - type: web
+    action:
+      navigate:
+        url: http://localhost:9280/forms/post
+    info: "title is '{{.result.title}}'"
+    assertions:
+    - result.title ShouldBeEmpty
+
+  - type: web
+    action:
+      find: input[name="custname"]
+    assertions:
+     - result.find ShouldEqual 1
+
+  - type: web
+    action:
+      fill:
+      - find: input[name="custname"]
+        text: "venom ovh"
+        
+  - type: web
+    action:
+      click:
+        find: button
+        wait: 1
+    screenshot: httpbin_post.jpg

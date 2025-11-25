@@ -1,0 +1,59 @@
+name: Kafka testsuite
+version: "2"
+testcases:
+- name: Kafka test
+  description: Test kafka
+  steps:
+  - name: produce-test
+    type: kafka
+    clientType: producer
+    withSASL: false
+    withTLS: false
+    user: "{{.kafkaUser}}"
+    password: "{{.kafkaPwd}}"
+    addrs:
+      - "{{.kafkaHost}}:{{.kafkaPort}}"
+    messages:
+    - topic: test-topic
+      headers:
+        'x-api-key': 'hola'
+        'x-something-else': 'ole'
+      value: '{"hello":"bar"}'
+  - name: consume-test
+    type: kafka
+    clientType: consumer
+    withTLS: false
+    withSASL: false
+    user: "{{.kafkaUser}}"
+    password: "{{.kafkaPwd}}"
+    markOffset: true
+    initialOffset: oldest
+    messageLimit: 1
+    groupID: venom
+    addrs:
+      - "{{.kafkaHost}}:{{.kafkaPort}}"
+    topics:
+      - test-topic
+    assertions:
+    - result.messagesjson.messagesjson0.Value.hello ShouldEqual bar
+    - result.messages.__Len__ ShouldEqual 1
+  - name: consume-test-2
+    type: kafka
+    clientType: consumer
+    withTLS: false
+    withSASL: false
+    user: "{{.kafkaUser}}"
+    password: "{{.kafkaPwd}}"
+    markOffset: false
+    initialOffset: oldest
+    waitFor: 5
+    groupID: venom-wait-for
+    addrs:
+      - "{{.kafkaHost}}:{{.kafkaPort}}"
+    topics:
+      - test-topic
+    assertions:
+    - result.messages.__Len__ ShouldBeGreaterThanOrEqualTo 1
+    - result.messagesjson.messagesjson0.Value.hello ShouldEqual bar
+  - type: exec
+    script: command -v kt && KT_BROKER="{{.kafkaHost}}:{{.kafkaPort}}" kt admin --deletetopic test-topic || true
