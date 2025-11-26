@@ -1,25 +1,22 @@
 package com.yapily.e2eqa4j.input_processor;
 
-import com.yapily.e2eqa4j.command.run_tests.RunTestsCommand;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RunTestsCommandInputProcessor
 {
-    @Autowired RunTestsCommand runTestsCommand;
+    public String path;
+    public String libDir;
+    public Map<String, String> vars = new HashMap<>();
 
 
     public void process(List<String> tokens) throws IOException
     {
-        String path = null;
-        String libDir = null;
-        Map<String, String> vars = new HashMap<>();
         for(int i = 0; i < tokens.size(); i++)
         {
             String t = tokens.get(i);
@@ -75,6 +72,5 @@ public class RunTestsCommandInputProcessor
         System.out.println("Parsed path   = " + path);
         System.out.println("Parsed libDir = " + libDir);
         System.out.println("Parsed vars   = " + vars);
-        runTestsCommand.runTests(path, libDir, vars);
     }
 }

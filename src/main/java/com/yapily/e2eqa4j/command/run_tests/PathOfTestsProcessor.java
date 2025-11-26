@@ -16,29 +16,42 @@ class PathOfTestsProcessor
     {
         if(path.startsWith("/"))
         {
-            Path p = Path.of(path);
-            if(!Files.exists(p))
-            {
-                throw new IOException("Path not found: " + path);
-            }
+            validateTestsPath(path);
         }
         else
         {
-            currentDir += "/" + path;
-            File file = new File(currentDir);
-            if(!file.exists())
+            currentDir = getAbsolutePathOfTestsDirectory(path, currentDir);
+        }
+        return currentDir;
+    }
+
+
+    private String getAbsolutePathOfTestsDirectory(String path, String currentDir) throws IOException
+    {
+        currentDir += "/" + path;
+        File file = new File(currentDir);
+        if(!file.exists())
+        {
+            throw new IOException("Path/file not found: " + currentDir);
+        }
+        else
+        {
+            if(file.isFile())
             {
-                throw new IOException("Path/file not found: " + currentDir);
-            }
-            else
-            {
-                if(file.isFile())
-                {
-                    isPathAFile = true;
-                }
+                isPathAFile = true;
             }
         }
         return currentDir;
+    }
+
+
+    private static void validateTestsPath(String path) throws IOException
+    {
+        Path p = Path.of(path);
+        if(!Files.exists(p))
+        {
+            throw new IOException("Path not found: " + path);
+        }
     }
 
 

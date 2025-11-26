@@ -1,5 +1,6 @@
 package com.yapily.e2eqa4j;
 
+import com.yapily.e2eqa4j.command.run_tests.RunTestsCommand;
 import com.yapily.e2eqa4j.input_processor.RunTestsCommandInputProcessor;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class RunnerEntryPoint implements ApplicationRunner
 {
     @Autowired RunTestsCommandInputProcessor runTestsCommandInputProcessor;
+    @Autowired RunTestsCommand runTestsCommand;
 
 
     @Override
@@ -29,6 +31,7 @@ public class RunnerEntryPoint implements ApplicationRunner
                 {
                     tokens.remove(0);
                     runTestsCommandInputProcessor.process(tokens);
+                    runTestsCommand.runTests(runTestsCommandInputProcessor.path, runTestsCommandInputProcessor.libDir, runTestsCommandInputProcessor.vars);
                 }
             }
         }

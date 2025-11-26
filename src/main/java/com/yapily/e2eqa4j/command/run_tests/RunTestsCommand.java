@@ -1,6 +1,6 @@
 package com.yapily.e2eqa4j.command.run_tests;
 
-import com.yapily.e2eqa4j.TestRunner;
+import com.yapily.e2eqa4j.test_runner.TestRunner;
 import com.yapily.e2eqa4j.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -37,18 +37,24 @@ public class RunTestsCommand
         }
         else
         {
-            List<File> testFiles = FileUtils.getFilesInPathAndSubpaths(pathOfTestsOrTestFile);
-            System.out.println("Running test files: " + testFiles);
-            testFiles.forEach(testFile -> {
-                try
-                {
-                    testRunner.runTest(testFile, libraryFiles, globalVariables);
-                }
-                catch(IOException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            });
+            runTestsInPath(globalVariables, pathOfTestsOrTestFile, libraryFiles);
         }
+    }
+
+
+    private void runTestsInPath(Map<String, String> globalVariables, String pathOfTestsOrTestFile, List<File> libraryFiles) throws IOException
+    {
+        List<File> testFiles = FileUtils.getFilesInPathAndSubpaths(pathOfTestsOrTestFile);
+        System.out.println("Running test files: " + testFiles);
+        testFiles.forEach(testFile -> {
+            try
+            {
+                testRunner.runTest(testFile, libraryFiles, globalVariables);
+            }
+            catch(IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
