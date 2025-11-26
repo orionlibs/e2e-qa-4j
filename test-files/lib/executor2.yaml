@@ -24,7 +24,7 @@ steps:
       - 'status code is {{result.statusCode}}'
       - 'test executor log'
 output:
-  uuid: '{{result.body.json.key3.1.uuid}}'
-  output1: '{{result.body.json.key1}}'
+  var3: 'var3Value'
+  var4: 'var4Value'
   statusCode: '{{result.statusCode}}'
   body: '{{result.body}}'

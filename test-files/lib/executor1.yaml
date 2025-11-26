@@ -25,5 +25,7 @@ steps:
 output:
   uuid: '{{result.body.json.key3.1.uuid}}'
   output1: '{{result.body.json.key1}}'
+  uuid2: 'uuid2Value'
+  output2: 'output2Value'
   statusCode: '{{result.statusCode}}'
   body: '{{result.body}}'

@@ -5,8 +5,10 @@ import com.yapily.e2eqa4j.executor.http.APICallResult;
 import com.yapily.e2eqa4j.executor.http.HTTPExecutor;
 import com.yapily.e2eqa4j.executor.http.HTTPHeaderService;
 import com.yapily.e2eqa4j.model.Executor;
+import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,14 @@ class ExecutorStepRunner
         step.vars.forEach((k, v) -> System.out.println("Step result var: " + k + " -> " + v));
         step.assertions.forEach(k -> System.out.println("Assertion: " + k));
         step.input.putAll(globalVariables);
+        for(Map.Entry<String, Object> entry : step.input.entrySet())
+        {
+            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), entry1.getValue()));
+            if(lastStepResult != null && lastStepResult.result != null)
+            {
+                lastStepResult.result.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), (String)entry1.getValue()));
+            }
+        }
         System.out.println("Step input vars: " + step.input);
         System.out.println("Running step: " + step.type);
         System.out.println("Step headers: " + step.headers);

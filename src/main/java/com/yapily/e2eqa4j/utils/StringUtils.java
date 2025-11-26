@@ -19,7 +19,16 @@ public class StringUtils
     }
 
 
-    public static void injectValue(Map.Entry<String, Object> entry, String placeholderToReplace, String replacement)
+    public static void injectObjectValue(Map.Entry<String, Object> entry, String placeholderToReplace, String replacement)
+    {
+        String regex = "(?s)\\{\\{" + placeholderToReplace + "\\}\\}";
+        entry.setValue(entry.getValue()
+                        .toString()
+                        .replaceAll(regex, replacement));
+    }
+
+
+    public static void injectStringValue(Map.Entry<String, String> entry, String placeholderToReplace, String replacement)
     {
         String regex = "(?s)\\{\\{" + placeholderToReplace + "\\}\\}";
         entry.setValue(entry.getValue()

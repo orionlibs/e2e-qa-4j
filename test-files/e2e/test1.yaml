@@ -9,10 +9,10 @@ testcases:
         input:
           input1: "input1var {{institutionId}}"
         vars:
-          var1: result.output1
-          var2: result.uuid
+          var1: '{{result.output2}}'
+          var2: '{{result.uuid2}}'
         assertions:
-          - result.var1 ShouldEqual hello
+          - '{{result.var1}} ShouldEqual hello'
         log:
           - 'status code is {{result.statusCode}}'
           - 'test executor info'
@@ -24,5 +24,5 @@ testcases:
           var1: '{{executor1.var1}}'
           var2: '{{executor1.var2}}'
         vars:
-          var3: result.var3
-          var4: result.var4
+          var3: '{{result.var3}}'
+          var4: '{{result.var4}}'

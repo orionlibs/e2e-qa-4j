@@ -23,7 +23,7 @@ public class Executor
         public String url;
         public Map<String, String> headers = new HashMap<>();
         public String body;
-        public List<String> info = new ArrayList<>();
+        public List<String> log = new ArrayList<>();
         public StepResult result = new StepResult();
     }
 
@@ -34,5 +34,6 @@ public class Executor
         public int statusCode;
         public Map<String, String> headers = new HashMap<>();
         public String stdout;
+        public Map<String, Object> result = new HashMap<>();
     }
 }
