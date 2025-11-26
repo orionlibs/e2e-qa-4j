@@ -13,7 +13,7 @@ testcases:
           var2: result.uuid
         assertions:
           - result.var1 ShouldEqual hello
-        info:
+        log:
           - 'status code is {{result.statusCode}}'
           - 'test executor info'
 

@@ -1,0 +1,37 @@
+load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
+
+exports_files([
+    "AssemblyInfo.cs.template",
+    "Selenium.snk",
+])
+
+pkg_zip(
+    name = "strongnamed",
+    srcs = [
+        "//dotnet/src/support:support-strongnamed-pack",
+        "//dotnet/src/webdriver:webdriver-strongnamed-pack",
+    ],
+    tags = [
+        "release-artifact",
+    ],
+)
+
+pkg_zip(
+    name = "release",
+    srcs = [
+        "//dotnet/src/support:support-pack",
+        "//dotnet/src/webdriver:webdriver-pack",
+    ],
+    tags = [
+        "release-artifact",
+    ],
+)
+
+filegroup(
+    name = "source_files_support_needs_from_core",
+    srcs = [
+        "//dotnet/src/webdriver:Internal/StringSyntaxAttribute.cs",
+        "//dotnet/src/webdriver:Internal/StringSyntaxConstants.cs",
+    ],
+    visibility = ["__subpackages__"],
+)
