@@ -6,6 +6,7 @@ import com.yapily.e2eqa4j.model.TestSuite.Testcase;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +20,11 @@ class TestCaseRunner
     {
         System.out.println("Testcase: " + testCase.name);
         TestSuite.StepResult lastStepResult = null;
-        Map<String, Map<String, String>> stepNamesThatHaveExecuted = new HashMap<>();
         for(TestSuite.Step step : testCase.steps)
         {
-            lastStepResult = testStepRunner.runStep(globalVariables, executors, testCase, step, stepNamesThatHaveExecuted, lastStepResult);
+            lastStepResult = testStepRunner.runStep(globalVariables, executors, testCase, step, lastStepResult);
         }
-        System.out.println(">>>>>>>>>>>>>>>>>>>>size1: " + stepNamesThatHaveExecuted.size());
-        stepNamesThatHaveExecuted.put(testCase.name, new HashMap<>(testCase.result));
-        System.out.println(">>>>>>>>>>>>>>>>>>>>size1: " + stepNamesThatHaveExecuted.size());
+        TestLIVEData.stepNamesThatHaveExecuted.put(testCase.name, new HashMap<>(testCase.result));
 
     }
 }

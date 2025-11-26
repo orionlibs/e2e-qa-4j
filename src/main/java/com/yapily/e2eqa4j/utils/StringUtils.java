@@ -22,6 +22,37 @@ public class StringUtils
     public static void injectObjectValue(Map.Entry<String, Object> entry, String placeholderToReplace, String replacement)
     {
         String regex = "(?s)\\{\\{" + placeholderToReplace + "\\}\\}";
+        if(!placeholderToReplace.startsWith("\\{\\{") && !placeholderToReplace.endsWith("\\{\\{"))
+        {
+            regex = "(?s)" + placeholderToReplace;
+        }
+        else if(placeholderToReplace.startsWith("\\{\\{") && !placeholderToReplace.endsWith("\\{\\{"))
+        {
+            regex = "(?s)\\{\\{" + placeholderToReplace.substring(2);
+        }
+        else if(!placeholderToReplace.startsWith("\\{\\{") && placeholderToReplace.endsWith("\\{\\{"))
+        {
+            regex = "(?s)" + placeholderToReplace.substring(0, placeholderToReplace.length() - 3) + "\\}\\}";
+        }
+        if(replacement != null)
+        {
+            if(replacement.startsWith("\\{\\{") && replacement.endsWith("\\{\\{"))
+            {
+                replacement = replacement.substring(2, replacement.length() - 3);
+            }
+            else if(replacement.startsWith("\\{\\{") && !replacement.endsWith("\\{\\{"))
+            {
+                replacement = replacement.substring(2);
+            }
+            else if(!replacement.startsWith("\\{\\{") && replacement.endsWith("\\{\\{"))
+            {
+                replacement = "(?s)" + replacement.substring(0, replacement.length() - 3);
+            }
+        }
+        else
+        {
+            replacement = placeholderToReplace;
+        }
         entry.setValue(entry.getValue()
                         .toString()
                         .replaceAll(regex, replacement));
@@ -31,6 +62,37 @@ public class StringUtils
     public static void injectStringValue(Map.Entry<String, String> entry, String placeholderToReplace, String replacement)
     {
         String regex = "(?s)\\{\\{" + placeholderToReplace + "\\}\\}";
+        if(!placeholderToReplace.startsWith("\\{\\{") && !placeholderToReplace.endsWith("\\{\\{"))
+        {
+            regex = "(?s)" + placeholderToReplace;
+        }
+        else if(placeholderToReplace.startsWith("\\{\\{") && !placeholderToReplace.endsWith("\\{\\{"))
+        {
+            regex = "(?s)\\{\\{" + placeholderToReplace.substring(2);
+        }
+        else if(!placeholderToReplace.startsWith("\\{\\{") && placeholderToReplace.endsWith("\\{\\{"))
+        {
+            regex = "(?s)" + placeholderToReplace.substring(0, placeholderToReplace.length() - 3) + "\\}\\}";
+        }
+        if(replacement != null)
+        {
+            if(replacement.startsWith("\\{\\{") && replacement.endsWith("\\{\\{"))
+            {
+                replacement = replacement.substring(2, replacement.length() - 3);
+            }
+            else if(replacement.startsWith("\\{\\{") && !replacement.endsWith("\\{\\{"))
+            {
+                replacement = replacement.substring(2);
+            }
+            else if(!replacement.startsWith("\\{\\{") && replacement.endsWith("\\{\\{"))
+            {
+                replacement = "(?s)" + replacement.substring(0, replacement.length() - 3);
+            }
+        }
+        else
+        {
+            replacement = placeholderToReplace;
+        }
         entry.setValue(entry.getValue()
                         .toString()
                         .replaceAll(regex, replacement));

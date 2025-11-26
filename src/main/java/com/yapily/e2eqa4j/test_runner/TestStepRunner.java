@@ -17,7 +17,7 @@ class TestStepRunner
     @Autowired ExecutorRunner executorRunner;
 
 
-    TestSuite.StepResult runStep(Map<String, String> globalVariables, List<Executor> executors, TestSuite.Testcase testCase, Step step, Map<String, Map<String, String>> stepNamesThatHaveExecuted, TestSuite.StepResult lastStepResult)
+    TestSuite.StepResult runStep(Map<String, String> globalVariables, List<Executor> executors, TestSuite.Testcase testCase, Step step, TestSuite.StepResult lastStepResult)
     {
         System.out.println("Step type: " + step.type);
         step.vars.forEach((k, v) -> System.out.println("Step result var: " + k + " -> " + v));
@@ -37,9 +37,9 @@ class TestStepRunner
                 }
             }
             String[] keyParts = entry.getValue().toString().split("\\.");
-            for(Entry<String, Map<String, String>> stepThatHasExecuted : stepNamesThatHaveExecuted.entrySet())
+            for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
             {
-                if(stepThatHasExecuted.getKey().equals(keyParts[0]))
+                if(stepThatHasExecuted.getKey().equals(keyParts[0].substring(2)))
                 {
                     StringUtils.injectObjectValue(entry, entry.getValue().toString(), stepThatHasExecuted.getValue().get(keyParts[1]));
                 }
@@ -68,10 +68,8 @@ class TestStepRunner
             }
         }
         step.result.output.putAll(executorOutput);
-        System.out.println(">>>>>>>>>>>>>>>>>>>>size2: " + stepNamesThatHaveExecuted.size());
-        stepNamesThatHaveExecuted.put(testCase.name + "." + step.type, new HashMap<>(step.result.output));
-        System.out.println(">>>>>>>>>>>>>>>>>>>>size2: " + stepNamesThatHaveExecuted.size());
-        System.out.println("steps that have executed: " + stepNamesThatHaveExecuted.entrySet());
+        TestLIVEData.stepNamesThatHaveExecuted.put(testCase.name + "." + step.type, new HashMap<>(step.result.output));
+        System.out.println("steps that have executed: " + TestLIVEData.stepNamesThatHaveExecuted.entrySet());
         //set actual values in all step.vars
         for(Map.Entry<String, String> entry : step.vars.entrySet())
         {
@@ -86,9 +84,9 @@ class TestStepRunner
             }
             testCase.result.putAll(step.result.output);
             String[] keyParts = entry.getValue().split("\\.");
-            for(Entry<String, Map<String, String>> stepThatHasExecuted : stepNamesThatHaveExecuted.entrySet())
+            for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
             {
-                if(stepThatHasExecuted.getKey().equals(keyParts[0]))
+                if(stepThatHasExecuted.getKey().equals(keyParts[0].substring(2)))
                 {
                     StringUtils.injectStringValue(entry, entry.getValue(), stepThatHasExecuted.getValue().get(keyParts[1]));
                 }
