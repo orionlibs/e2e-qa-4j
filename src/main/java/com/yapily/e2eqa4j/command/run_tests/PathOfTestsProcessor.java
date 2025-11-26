@@ -12,6 +12,16 @@ class PathOfTestsProcessor
     private boolean isPathAFile;
 
 
+    private static void validateTestsPath(String path) throws IOException
+    {
+        Path p = Path.of(path);
+        if(!Files.exists(p))
+        {
+            throw new IOException("Path not found: " + path);
+        }
+    }
+
+
     String processPath(String path, String currentDir) throws IOException
     {
         if(path.startsWith("/"))
@@ -42,16 +52,6 @@ class PathOfTestsProcessor
             }
         }
         return currentDir;
-    }
-
-
-    private static void validateTestsPath(String path) throws IOException
-    {
-        Path p = Path.of(path);
-        if(!Files.exists(p))
-        {
-            throw new IOException("Path not found: " + path);
-        }
     }
 
 

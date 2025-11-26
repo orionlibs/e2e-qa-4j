@@ -17,9 +17,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestRunner
 {
-    @Autowired YAMLUtils yamlUtils;
-    @Autowired ExecutorRunner executorRunner;
     @Autowired TestCasesRunner testCasesRunner;
+    @Autowired SetupExecutorsRunner setupExecutorsRunner;
+    @Autowired YAMLUtils yamlUtils;
     Map<String, String> allVars = new HashMap<>();
 
 
@@ -32,18 +32,7 @@ public class TestRunner
             TestSuite testSuite = yamlUtils.loadTestSuite(isr);
             System.out.println("Running test suite: " + testSuite.name);
             testSuite.setup.steps.forEach(s -> System.out.println("setup steps: " + s.type));
-            for(Executor executor : executors)
-            {
-                for(TestSuite.Step setupExecutor : testSuite.setup.steps)
-                {
-                    if(executor.executor.equals(setupExecutor.type))
-                    {
-                        Map<String, String> executorOutput = executorRunner.runExecutor(globalVariables, executor, executors);
-                        globalVariables.putAll(executorOutput);
-                        break;
-                    }
-                }
-            }
+            setupExecutorsRunner.runSetupExecutors(executors, testSuite, globalVariables);
             System.out.println("Running test suite: " + testSuite.setup);
             testCasesRunner.runTestCases(globalVariables, testSuite, executors);
         }

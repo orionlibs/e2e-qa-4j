@@ -9,20 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 class PathOfTestLibraryProcessor
 {
-    String processLibraryPath(String testLibraryPath, String currentDir) throws IOException
-    {
-        if(testLibraryPath.startsWith("/"))
-        {
-            validateAbsolutePathOfExecutorsDirectory(testLibraryPath);
-        }
-        else
-        {
-            currentDir = getAbsolutePathOfExecutorsDirectory(testLibraryPath, currentDir);
-        }
-        return currentDir;
-    }
-
-
     private static String getAbsolutePathOfExecutorsDirectory(String testLibraryPath, String currentDir) throws IOException
     {
         currentDir += "/" + testLibraryPath;
@@ -49,5 +35,19 @@ class PathOfTestLibraryProcessor
         {
             throw new IOException("Library path not found: " + testLibraryPath);
         }
+    }
+
+
+    String processLibraryPath(String testLibraryPath, String currentDir) throws IOException
+    {
+        if(testLibraryPath.startsWith("/"))
+        {
+            validateAbsolutePathOfExecutorsDirectory(testLibraryPath);
+        }
+        else
+        {
+            currentDir = getAbsolutePathOfExecutorsDirectory(testLibraryPath, currentDir);
+        }
+        return currentDir;
     }
 }

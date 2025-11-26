@@ -18,7 +18,7 @@ class ExecutorStepRunner
     @Autowired HTTPHeaderService httpHeaderService;
 
 
-    Executor.StepResult runExecutorStep(Map<String, String> globalVariables, List<Executor> executors, Executor.Step step, Executor.StepResult lastStepResult)
+    Executor.StepResult runExecutorStep(ExecutorRunner executorRunner, Map<String, String> globalVariables, List<Executor> executors, Executor.Step step, Executor.StepResult lastStepResult)
     {
         //set actual values in all step.input
         //set actual values in all step.headers
@@ -35,7 +35,7 @@ class ExecutorStepRunner
         {
             if(executor.executor.equals(step.type))
             {
-                runExecutor(globalVariables, executor, executors);
+                executorRunner.runExecutor(globalVariables, executor, executors);
                 break;
             }
             else if(ExecutorType.HTTP.name().equalsIgnoreCase(step.type))

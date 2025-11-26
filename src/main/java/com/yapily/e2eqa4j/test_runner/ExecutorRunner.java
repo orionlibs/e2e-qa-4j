@@ -18,7 +18,7 @@ class ExecutorRunner
         Executor.StepResult lastStepResult = null;
         for(Executor.Step step : executor.steps)
         {
-            lastStepResult = executorStepRunner.runExecutorStep(globalVariables, executors, step, lastStepResult);
+            lastStepResult = executorStepRunner.runExecutorStep(this, globalVariables, executors, step, lastStepResult);
         }
         //set actual values in all executor.output
         executor.output.forEach((k, v) -> System.out.println("Executor output var: " + k + " -> " + v));
