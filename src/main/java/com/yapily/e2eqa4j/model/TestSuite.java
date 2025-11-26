@@ -1,6 +1,5 @@
 package com.yapily.e2eqa4j.model;
 
-import com.yapily.e2eqa4j.model.Executor.StepResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +9,13 @@ public class TestSuite
 {
     public String name;
     public List<Testcase> testcases;
+    public Setup setup;
+
+
+    public static class Setup
+    {
+        public List<Step> steps;
+    }
 
 
     public static class Testcase

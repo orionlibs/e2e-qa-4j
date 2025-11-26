@@ -1,4 +1,7 @@
 name: "Test1"
+setup:
+  steps:
+    - type: executor3
 testcases:
   - name: executor1
     steps:

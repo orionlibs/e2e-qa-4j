@@ -19,7 +19,7 @@
     
     
     <build>
-        <finalName>e2eqa</finalName>
+        <finalName>e2eqa4j</finalName>
 
 
         <plugins>

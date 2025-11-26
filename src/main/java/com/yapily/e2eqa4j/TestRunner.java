@@ -39,6 +39,20 @@ public class TestRunner
         {
             TestSuite testSuite = yamlUtils.loadTestSuite(isr);
             System.out.println("Running test suite: " + testSuite.name);
+            testSuite.setup.steps.forEach(s -> System.out.println("setup steps: " + s.type));
+            for(Executor executor : executors)
+            {
+                for(TestSuite.Step setupExecutor : testSuite.setup.steps)
+                {
+                    if(executor.executor.equals(setupExecutor.type))
+                    {
+                        Map<String, String> executorOutput = runExecutor(globalVariables, executor, executors);
+                        globalVariables.putAll(executorOutput);
+                        break;
+                    }
+                }
+            }
+            System.out.println("Running test suite: " + testSuite.setup);
             runTestCases(globalVariables, testSuite, executors);
         }
     }
