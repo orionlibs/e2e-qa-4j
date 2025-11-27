@@ -7,6 +7,7 @@ import com.yapily.e2eqa4j.executor.http.HTTPHeaderService;
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,6 +36,10 @@ class ExecutorStepRunner
             if(lastStepResult != null && lastStepResult.result != null)
             {
                 lastStepResult.result.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), (String)entry1.getValue()));
+            }
+            for(Map.Entry<String, String> stepVar : step.vars.entrySet())
+            {
+                StringUtils.injectValue(entry, stepVar.getKey(), stepVar.getValue());
             }
             List<String> placeholders = new ArrayList<>();
             Pattern p = Pattern.compile("\\{\\{[^}]+\\}\\}");
@@ -71,6 +76,10 @@ class ExecutorStepRunner
                     {
                         lastStepResult.result.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, "result." + entry1.getKey(), entry1.getValue()));
                     }
+                }
+                for(Map.Entry<String, String> stepVar : step.vars.entrySet())
+                {
+                    StringUtils.injectValue(entry, stepVar.getKey(), stepVar.getValue());
                 }
                 String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
                 for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
@@ -151,8 +160,28 @@ class ExecutorStepRunner
                 step.result.headers = apiCallResult.headers;
                 break;
             }
+            for(Map.Entry<String, String> entry : step.vars.entrySet())
+            {
+                globalVariables.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
+                step.result.result.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, "result." + entry1.getKey(), entry1.getValue()));
+                if(lastStepResult != null)
+                {
+                    if(lastStepResult.result != null)
+                    {
+                        lastStepResult.result.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
+                    }
+                }
+                String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
+                for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
+                {
+                    if(stepThatHasExecuted.getKey().equals(keyParts[0]))
+                    {
+                        StringUtils.injectValue(entry, entry.getValue(), stepThatHasExecuted.getValue().get(keyParts[1]));
+                    }
+                }
+            }
+            TestLIVEData.stepNamesThatHaveExecuted.put(step.type, new HashMap<>(step.result.result));
         }
-        //set actual values in all step.vars
         //process assertions
         //set actual values in all step.result
         //process info
