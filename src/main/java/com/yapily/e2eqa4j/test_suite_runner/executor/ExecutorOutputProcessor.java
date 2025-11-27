@@ -74,7 +74,7 @@ public class ExecutorOutputProcessor
                 else if(placeholder.indexOf(".") != -1)
                 {
                     String[] keyParts = placeholder.split("\\.");
-                    StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry, placeholder);
+                    StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, entry, placeholder);
                 }
             }
         }

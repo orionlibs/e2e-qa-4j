@@ -42,7 +42,7 @@ public class StringUtils
     }
 
 
-    public static void processReplacementsInTestStepUsingStepsAlreadyExecuted(String[] keyParts, Map.Entry<String, String> entry)
+    public static void processReplacementsInStepUsingStepsAlreadyExecuted(String[] keyParts, Map.Entry<String, String> entry)
     {
         for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
         {
@@ -54,7 +54,7 @@ public class StringUtils
     }
 
 
-    public static String processReplacementsInTestStepUsingStepsAlreadyExecuted(String[] keyParts, String entry, String placeholder)
+    public static String processReplacementsInStepUsingStepsAlreadyExecuted(String[] keyParts, String entry, String placeholder)
     {
         for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
         {
@@ -67,7 +67,7 @@ public class StringUtils
     }
 
 
-    public static void processReplacementsInTestStepUsingStepsAlreadyExecuted(String[] keyParts, Map.Entry<String, String> entry, String placeholder)
+    public static void processReplacementsInStepUsingStepsAlreadyExecuted(String[] keyParts, Map.Entry<String, String> entry, String placeholder)
     {
         for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
         {

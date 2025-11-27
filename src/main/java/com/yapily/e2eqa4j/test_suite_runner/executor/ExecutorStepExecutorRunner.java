@@ -45,7 +45,7 @@ public class ExecutorStepExecutorRunner
                     StringUtils.injectValue(entry, stepVar.getKey(), stepVar.getValue());
                 }
                 String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
-                StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry);
+                StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, entry);
             }
             executor.input.putAll(step.input);
             executorToRun.input.putAll(step.input);
@@ -170,7 +170,7 @@ public class ExecutorStepExecutorRunner
                     }
                 }
                 String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
-                StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry);
+                StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, entry);
             }
             TestLIVEData.stepNamesThatHaveExecuted.put(step.type, new HashMap<>(step.result.result));
         }

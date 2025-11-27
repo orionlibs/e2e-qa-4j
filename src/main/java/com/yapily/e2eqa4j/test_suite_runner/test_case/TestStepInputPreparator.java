@@ -20,7 +20,7 @@ public class TestStepInputPreparator
                 lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, "result." + entry1.getKey(), entry1.getValue()));
             }
             String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
-            StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry);
+            StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, entry);
         }
     }
 }

@@ -76,7 +76,7 @@ public class ExecutorStepLogProcessor
                 else if(placeholder.indexOf(".") != -1)
                 {
                     String[] keyParts = placeholder.split("\\.");
-                    updatedLog = StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, updatedLog, placeholder);
+                    updatedLog = StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, updatedLog, placeholder);
                 }
             }
             Logger.info(updatedLog);
