@@ -2,6 +2,7 @@ package com.yapily.e2eqa4j.test_suite_runner;
 
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.model.TestSuite;
+import com.yapily.e2eqa4j.test_suite_runner.executor.SetupExecutorsRunner;
 import com.yapily.e2eqa4j.utils.YAMLUtils;
 import java.io.File;
 import java.io.FileInputStream;
