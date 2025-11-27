@@ -45,13 +45,7 @@ public class ExecutorStepExecutorRunner
                     StringUtils.injectValue(entry, stepVar.getKey(), stepVar.getValue());
                 }
                 String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
-                for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
-                {
-                    if(stepThatHasExecuted.getKey().equals(keyParts[0]))
-                    {
-                        StringUtils.injectValue(entry, entry.getValue(), stepThatHasExecuted.getValue().get(keyParts[1]));
-                    }
-                }
+                StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry);
             }
             executor.input.putAll(step.input);
             executorToRun.input.putAll(step.input);
@@ -176,13 +170,7 @@ public class ExecutorStepExecutorRunner
                     }
                 }
                 String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
-                for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
-                {
-                    if(stepThatHasExecuted.getKey().equals(keyParts[0]))
-                    {
-                        StringUtils.injectValue(entry, entry.getValue(), stepThatHasExecuted.getValue().get(keyParts[1]));
-                    }
-                }
+                StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry);
             }
             TestLIVEData.stepNamesThatHaveExecuted.put(step.type, new HashMap<>(step.result.result));
         }

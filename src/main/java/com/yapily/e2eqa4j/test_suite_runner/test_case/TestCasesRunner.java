@@ -17,7 +17,7 @@ public class TestCasesRunner
     {
         for(TestSuite.Testcase testCase : testSuite.testcases)
         {
-            testCaseRunner.runTestCase(globalVariables, executors, testCase);
+            testCaseRunner.runTestCase(globalVariables, testSuite.vars, executors, testCase);
         }
     }
 }

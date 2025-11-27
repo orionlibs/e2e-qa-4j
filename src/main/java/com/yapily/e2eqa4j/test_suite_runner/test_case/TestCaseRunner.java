@@ -15,12 +15,12 @@ public class TestCaseRunner
     @Autowired TestStepRunner testStepRunner;
 
 
-    public void runTestCase(Map<String, String> globalVariables, List<Executor> executors, Testcase testCase)
+    public void runTestCase(Map<String, String> globalVariables, Map<String, String> testSuiteVars, List<Executor> executors, Testcase testCase)
     {
         TestSuite.StepResult lastStepResult = null;
         for(TestSuite.Step step : testCase.steps)
         {
-            lastStepResult = testStepRunner.runStep(globalVariables, executors, testCase, step, lastStepResult);
+            lastStepResult = testStepRunner.runStep(globalVariables, testSuiteVars, executors, testCase, step, lastStepResult);
         }
         TestLIVEData.stepNamesThatHaveExecuted.put(testCase.name, new HashMap<>(testCase.result));
     }

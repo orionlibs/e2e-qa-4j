@@ -2,12 +2,14 @@ name: "Test1"
 setup:
   steps:
     - type: executor3
+vars:
+  testVar1: "testVar1Value"
 testcases:
   - name: executor1
     steps:
       - type: executor1
         input:
-          input1: "input1var {{institutionId}}"
+          input1: "input1var {{institutionId}} and {{testVar1}}"
         vars:
           var1: '{{result.output2}}'
           var2: '{{result.uuid2}}'

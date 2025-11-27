@@ -1,7 +1,6 @@
 package com.yapily.e2eqa4j.test_suite_runner.executor;
 
 import com.yapily.e2eqa4j.model.Executor;
-import com.yapily.e2eqa4j.test_suite_runner.test_case.TestLIVEData;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +74,7 @@ public class ExecutorOutputProcessor
                 else if(placeholder.indexOf(".") != -1)
                 {
                     String[] keyParts = placeholder.split("\\.");
-                    for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
-                    {
-                        if(keyParts.length == 2 && stepThatHasExecuted.getKey().equals(keyParts[0].substring(2)))
-                        {
-                            StringUtils.injectValue(entry, placeholder, stepThatHasExecuted.getValue().get(keyParts[1].substring(0, keyParts[1].length() - 2)));
-                        }
-                    }
+                    StringUtils.processReplacementsInTestStepUsingStepsAlreadyExecuted(keyParts, entry, placeholder);
                 }
             }
         }

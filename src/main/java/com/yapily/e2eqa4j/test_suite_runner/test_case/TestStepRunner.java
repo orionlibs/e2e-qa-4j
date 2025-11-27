@@ -19,9 +19,9 @@ public class TestStepRunner
     @Autowired TestStepLogProcessor testStepLogProcessor;
 
 
-    public TestSuite.StepResult runStep(Map<String, String> globalVariables, List<Executor> executors, TestSuite.Testcase testCase, Step step, TestSuite.StepResult lastStepResult)
+    public TestSuite.StepResult runStep(Map<String, String> globalVariables, Map<String, String> testSuiteVars, List<Executor> executors, TestSuite.Testcase testCase, Step step, TestSuite.StepResult lastStepResult)
     {
-        testStepInputPreparator.prepare(step, globalVariables, lastStepResult);
+        testStepInputPreparator.prepare(step, globalVariables, testSuiteVars, lastStepResult);
         System.out.println("Step input vars: " + step.input);
         Map<String, String> executorOutput = new HashMap<>();
         testStepExecutorRunner.run(executors, step, testCase, globalVariables, executorOutput);
