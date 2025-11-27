@@ -1,4 +1,4 @@
-package com.yapily.e2eqa4j.test_suite_runner;
+package com.yapily.e2eqa4j.test_suite_runner.test_case;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

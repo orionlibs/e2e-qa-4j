@@ -6,7 +6,7 @@ import com.yapily.e2eqa4j.executor.http.HTTPExecutor;
 import com.yapily.e2eqa4j.executor.http.HTTPHeaderService;
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.model.TestSuite;
-import com.yapily.e2eqa4j.test_suite_runner.TestLIVEData;
+import com.yapily.e2eqa4j.test_suite_runner.test_case.TestLIVEData;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.yapily.e2eqa4j.test_suite_runner;
+package com.yapily.e2eqa4j.test_suite_runner.test_case;
 
 import com.yapily.e2eqa4j.Logger;
 import com.yapily.e2eqa4j.model.TestSuite;
