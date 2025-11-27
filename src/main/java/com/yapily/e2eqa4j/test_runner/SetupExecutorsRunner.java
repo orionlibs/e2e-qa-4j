@@ -15,9 +15,9 @@ class SetupExecutorsRunner
 
     void runSetupExecutors(List<Executor> executors, TestSuite testSuite, Map<String, String> globalVariables)
     {
-        for(Executor executor : executors)
+        for(TestSuite.Step setupExecutor : testSuite.setup.steps)
         {
-            for(TestSuite.Step setupExecutor : testSuite.setup.steps)
+            for(Executor executor : executors)
             {
                 if(executor.executor.equals(setupExecutor.type))
                 {

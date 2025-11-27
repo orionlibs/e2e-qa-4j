@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ public class TestRunner
     @Autowired TestCasesRunner testCasesRunner;
     @Autowired SetupExecutorsRunner setupExecutorsRunner;
     @Autowired YAMLUtils yamlUtils;
-    Map<String, String> allVars = new HashMap<>();
 
 
     public void runTest(File testFile, List<File> libraryFiles, Map<String, String> globalVariables) throws IOException
@@ -30,10 +28,7 @@ public class TestRunner
                         InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8))
         {
             TestSuite testSuite = yamlUtils.loadTestSuite(isr);
-            //System.out.println("Running test suite: " + testSuite.name);
-            //testSuite.setup.steps.forEach(s -> System.out.println("setup steps: " + s.type));
             setupExecutorsRunner.runSetupExecutors(executors, testSuite, globalVariables);
-            //System.out.println("Running test suite: " + testSuite.setup);
             testSuite.vars.forEach((k, v) -> globalVariables.put(k, v));
             testCasesRunner.runTestCases(globalVariables, testSuite, executors);
         }

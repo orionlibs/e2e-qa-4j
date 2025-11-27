@@ -69,8 +69,5 @@ public class RunTestsCommandInputProcessor
                     System.out.println("Unknown option: " + key + (value != null ? " => " + value : ""));
             }
         }
-        System.out.println("Parsed path   = " + path);
-        System.out.println("Parsed libDir = " + libDir);
-        System.out.println("Parsed vars   = " + vars);
     }
 }

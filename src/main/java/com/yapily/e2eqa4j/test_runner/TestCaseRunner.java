@@ -17,7 +17,6 @@ class TestCaseRunner
 
     void runTestCase(Map<String, String> globalVariables, List<Executor> executors, Testcase testCase)
     {
-        //System.out.println("Testcase: " + testCase.name);
         TestSuite.StepResult lastStepResult = null;
         for(TestSuite.Step step : testCase.steps)
         {
