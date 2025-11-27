@@ -10,6 +10,7 @@ public class TestSuite
     public String name;
     public List<Testcase> testcases;
     public Setup setup;
+    public Map<String, String> vars = new HashMap<>();
 
 
     public static class Setup

@@ -8,7 +8,7 @@ steps:
       Content-Type: 'application/json;charset=UTF-8'
     body: >-
       {
-        "key1": "{{input.input1}}",
+        "key1": "{{input.input1}} ----- {{institutionId}}",
         "key2": false,
         "key3": [
           {

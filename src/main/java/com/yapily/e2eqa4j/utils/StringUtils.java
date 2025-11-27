@@ -1,7 +1,6 @@
 package com.yapily.e2eqa4j.utils;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class StringUtils
 {
@@ -20,18 +19,23 @@ public class StringUtils
     }
 
 
-    public static void injectStringValue(Map.Entry<String, String> entry, String placeholderToReplace, String replacement)
+    public static void injectValue(Map.Entry<String, String> entry, String placeholderToReplace, String replacement)
     {
-        String regex = Pattern.quote(placeholderToReplace);
-        if(replacement == null)
+        if(placeholderToReplace.indexOf("{") == -1 && placeholderToReplace.indexOf("}") == -1)
         {
-            replacement = placeholderToReplace;
+            placeholderToReplace = "{{" + placeholderToReplace + "}}";
         }
-        entry.setValue(entry.getValue()
-                        .toString()
-                        .replace("\\{", "")
-                        .replace("\\}", "")
-                        .replaceAll(regex, replacement.replace("\\{", "")
-                                        .replace("\\}", "")));
+        String result = entry.getValue().replace(placeholderToReplace, replacement);
+        entry.setValue(result);
+    }
+
+
+    public static String injectValue(String stringToInjectTo, String placeholderToReplace, String replacement)
+    {
+        if(placeholderToReplace.indexOf("{") == -1 && placeholderToReplace.indexOf("}") == -1)
+        {
+            placeholderToReplace = "{{" + placeholderToReplace + "}}";
+        }
+        return stringToInjectTo.replace(placeholderToReplace, replacement);
     }
 }

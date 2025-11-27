@@ -30,10 +30,11 @@ public class TestRunner
                         InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8))
         {
             TestSuite testSuite = yamlUtils.loadTestSuite(isr);
-            System.out.println("Running test suite: " + testSuite.name);
-            testSuite.setup.steps.forEach(s -> System.out.println("setup steps: " + s.type));
+            //System.out.println("Running test suite: " + testSuite.name);
+            //testSuite.setup.steps.forEach(s -> System.out.println("setup steps: " + s.type));
             setupExecutorsRunner.runSetupExecutors(executors, testSuite, globalVariables);
-            System.out.println("Running test suite: " + testSuite.setup);
+            //System.out.println("Running test suite: " + testSuite.setup);
+            testSuite.vars.forEach((k, v) -> globalVariables.put(k, v));
             testCasesRunner.runTestCases(globalVariables, testSuite, executors);
         }
     }

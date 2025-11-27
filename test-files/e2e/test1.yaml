@@ -15,6 +15,7 @@ testcases:
           - '{{result.var1}} ShouldEqual hello'
         log:
           - 'status code is {{result.statusCode}}'
+          - 'output2 is {{result.output2}}'
           - 'test executor info'
 
   - name: executor2
@@ -26,3 +27,6 @@ testcases:
         vars:
           var3: '{{result.var3}}'
           var4: '{{result.var4}}'
+        log:
+          - 'log1 is {{executor1.var2}}'
+          - 'log2 is {{var4}}'

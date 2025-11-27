@@ -2,7 +2,6 @@ package com.yapily.e2eqa4j.test_runner;
 
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.model.TestSuite;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
