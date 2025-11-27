@@ -5,6 +5,7 @@ input:
   url: null
 steps:
   - type: http
+    name: executor2Step1
     method: POST
     headers:
       Content-Type: 'application/json;charset=UTF-8'
@@ -19,11 +20,26 @@ steps:
         ]
       }
     url: '{{input.url}}'
+    vars:
+      var5: "hello"
     assertions:
       - result.statusCode ShouldEqual 200
     log:
       - 'status code is {{result.statusCode}}'
       - 'test executor log'
+
+  - type: http
+    name: executor2Step2
+    method: POST
+    headers:
+      Content-Type: 'application/json;charset=UTF-8'
+    body: >-
+      {
+        "key1": "{{executor2Step1.var5}}"
+      }
+    url: '{{input.url}}'
+    log:
+      - 'executor2Step1.var5 is {{executor2Step1.var5}}'
 output:
   var3: 'var3Value'
   var4: 'var4Value'

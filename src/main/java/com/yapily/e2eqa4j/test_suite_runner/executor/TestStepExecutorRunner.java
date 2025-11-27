@@ -21,14 +21,17 @@ public class TestStepExecutorRunner
         {
             if(executor.executor.equals(step.type))
             {
+                //wire test step input to the executor input
                 executor.input.putAll(step.input);
                 for(Map.Entry<String, String> entry : executor.input.entrySet())
                 {
+                    //use the previously run test's result for wiring
                     for(Map.Entry<String, String> testResultVar : testCase.result.entrySet())
                     {
                         StringUtils.injectValue(entry, testResultVar.getKey(), testResultVar.getValue());
                     }
                 }
+                //executor output can be used by the test step that called the executor
                 executorOutput.putAll(executorRunner.runExecutor(globalVariables, executor, executors, testCase, step));
                 break;
             }

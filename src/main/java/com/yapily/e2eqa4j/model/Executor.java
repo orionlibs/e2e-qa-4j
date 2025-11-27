@@ -15,6 +15,7 @@ public class Executor
 
     public static class Step
     {
+        public String name;
         public String type;
         public Map<String, String> vars = new HashMap<>();
         public List<String> assertions = new ArrayList<>();

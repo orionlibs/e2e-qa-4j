@@ -9,7 +9,6 @@ import com.yapily.e2eqa4j.model.TestSuite;
 import com.yapily.e2eqa4j.test_suite_runner.test_case.TestLIVEData;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -72,6 +71,18 @@ public class ExecutorStepExecutorRunner
                             }
                         }
                     }
+                    else
+                    {
+                        String[] keyParts = placeholder.split("\\.");
+                        for(Map.Entry<String, Map<String, String>> executorStepResultPlusVars : TestLIVEData.executorStepNamesThatHaveExecuted.entrySet())
+                        {
+                            if(keyParts.length == 2 && executorStepResultPlusVars.getKey().equals(keyParts[0].substring(2)))
+                            {
+                                String replacement = executorStepResultPlusVars.getValue().get(keyParts[1].substring(0, keyParts[1].length() - 2));
+                                StringUtils.injectValue(entry, placeholder, replacement);
+                            }
+                        }
+                    }
                 }
             }
             System.out.println("Step headers: " + step.headers);
@@ -100,6 +111,18 @@ public class ExecutorStepExecutorRunner
                         }
                     }
                 }
+                else
+                {
+                    String[] keyParts = placeholder.split("\\.");
+                    for(Map.Entry<String, Map<String, String>> executorStepResultPlusVars : TestLIVEData.executorStepNamesThatHaveExecuted.entrySet())
+                    {
+                        if(keyParts.length == 2 && executorStepResultPlusVars.getKey().equals(keyParts[0].substring(2)))
+                        {
+                            String replacement = executorStepResultPlusVars.getValue().get(keyParts[1].substring(0, keyParts[1].length() - 2));
+                            updatedBody = StringUtils.injectValue(updatedBody, placeholder, replacement);
+                        }
+                    }
+                }
             }
             step.body = updatedBody;
             System.out.println("Step request body: " + step.body);
@@ -125,6 +148,18 @@ public class ExecutorStepExecutorRunner
                         if(keyParts.length == 2 && executorInput.getKey().equals(keyParts[1].substring(0, keyParts[1].length() - 2)))
                         {
                             updatedURL = StringUtils.injectValue(updatedURL, placeholder, executorInput.getValue());
+                        }
+                    }
+                }
+                else
+                {
+                    String[] keyParts = placeholder.split("\\.");
+                    for(Map.Entry<String, Map<String, String>> executorStepResultPlusVars : TestLIVEData.executorStepNamesThatHaveExecuted.entrySet())
+                    {
+                        if(keyParts.length == 2 && executorStepResultPlusVars.getKey().equals(keyParts[0].substring(2)))
+                        {
+                            String replacement = executorStepResultPlusVars.getValue().get(keyParts[1].substring(0, keyParts[1].length() - 2));
+                            updatedURL = StringUtils.injectValue(updatedURL, placeholder, replacement);
                         }
                     }
                 }
@@ -172,7 +207,6 @@ public class ExecutorStepExecutorRunner
                 String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
                 StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, entry);
             }
-            TestLIVEData.stepNamesThatHaveExecuted.put(step.type, new HashMap<>(step.result.result));
         }
     }
 }

@@ -6,9 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TestLIVEData
 {
     public static final Map<String, Map<String, String>> stepNamesThatHaveExecuted;
+    public static final Map<String, Map<String, String>> executorStepNamesThatHaveExecuted;
 
     static
     {
         stepNamesThatHaveExecuted = new ConcurrentHashMap<>();
+        executorStepNamesThatHaveExecuted = new ConcurrentHashMap<>();
     }
 }

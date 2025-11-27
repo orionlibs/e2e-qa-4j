@@ -3,6 +3,7 @@ input:
   input1: null
 steps:
   - type: http
+    name: executor1Step1
     method: POST
     headers:
       Content-Type: 'application/json;charset=UTF-8'

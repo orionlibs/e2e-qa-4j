@@ -2,6 +2,7 @@ package com.yapily.e2eqa4j.test_suite_runner.executor;
 
 import com.yapily.e2eqa4j.Logger;
 import com.yapily.e2eqa4j.model.Executor;
+import com.yapily.e2eqa4j.test_suite_runner.test_case.TestLIVEData;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,14 @@ public class ExecutorStepLogProcessor
                 {
                     String[] keyParts = placeholder.split("\\.");
                     updatedLog = StringUtils.processReplacementsInStepUsingStepsAlreadyExecuted(keyParts, updatedLog, placeholder);
+                    for(Map.Entry<String, Map<String, String>> executorStepResultPlusVars : TestLIVEData.executorStepNamesThatHaveExecuted.entrySet())
+                    {
+                        if(keyParts.length == 2 && executorStepResultPlusVars.getKey().equals(keyParts[0].substring(2)))
+                        {
+                            String replacement = executorStepResultPlusVars.getValue().get(keyParts[1].substring(0, keyParts[1].length() - 2));
+                            updatedLog = StringUtils.injectValue(updatedLog, placeholder, replacement);
+                        }
+                    }
                 }
             }
             Logger.info(updatedLog);
