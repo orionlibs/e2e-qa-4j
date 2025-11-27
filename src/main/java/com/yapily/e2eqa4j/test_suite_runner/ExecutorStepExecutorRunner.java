@@ -1,4 +1,4 @@
-package com.yapily.e2eqa4j.test_runner;
+package com.yapily.e2eqa4j.test_suite_runner;
 
 import com.yapily.e2eqa4j.executor.ExecutorType;
 import com.yapily.e2eqa4j.executor.http.APICallResult;

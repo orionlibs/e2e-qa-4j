@@ -1,6 +1,6 @@
 package com.yapily.e2eqa4j.command.run_tests;
 
-import com.yapily.e2eqa4j.test_runner.TestRunner;
+import com.yapily.e2eqa4j.test_suite_runner.TestRunner;
 import com.yapily.e2eqa4j.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;

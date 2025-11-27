@@ -1,4 +1,4 @@
-package com.yapily.e2eqa4j.test_runner;
+package com.yapily.e2eqa4j.test_suite_runner;
 
 import com.yapily.e2eqa4j.model.TestSuite;
 import com.yapily.e2eqa4j.model.TestSuite.Step;
@@ -8,18 +8,19 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestStepInputPreparator
+class TestStepVarsProcessor
 {
-    void prepare(Step step, Map<String, String> globalVariables, TestSuite.StepResult lastStepResult)
+    void process(Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables, TestSuite.StepResult lastStepResult)
     {
-        for(Map.Entry<String, String> entry : step.input.entrySet())
+        for(Map.Entry<String, String> entry : step.vars.entrySet())
         {
             globalVariables.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
+            step.result.output.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, "result." + entry1.getKey(), entry1.getValue()));
             if(lastStepResult != null)
             {
                 if(lastStepResult.output != null)
                 {
-                    lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, "result." + entry1.getKey(), entry1.getValue()));
+                    lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
                 }
             }
             String[] keyParts = entry.getValue().substring(2, entry.getValue().length() - 2).split("\\.");
@@ -30,6 +31,7 @@ class TestStepInputPreparator
                     StringUtils.injectValue(entry, entry.getValue(), stepThatHasExecuted.getValue().get(keyParts[1]));
                 }
             }
+            testCase.result.put(entry.getKey(), entry.getValue());
         }
     }
 }
