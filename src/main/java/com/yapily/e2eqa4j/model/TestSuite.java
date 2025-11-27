@@ -41,5 +41,6 @@ public class TestSuite
     public static class StepResult
     {
         public Map<String, String> output = new HashMap<>();
+        public Map<String, String> headers = new HashMap<>();
     }
 }

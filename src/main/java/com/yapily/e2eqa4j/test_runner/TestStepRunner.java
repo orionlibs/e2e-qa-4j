@@ -62,7 +62,7 @@ class TestStepRunner
                     }
                 }
                 //System.out.println("Executor input vars: " + executor.input);
-                executorOutput.putAll(executorRunner.runExecutor(globalVariables, executor, executors));
+                executorOutput.putAll(executorRunner.runExecutor(globalVariables, executor, executors, testCase, step));
                 break;
             }
         }
@@ -119,6 +119,24 @@ class TestStepRunner
             {
                 if(placeholder.startsWith("{{result."))
                 {
+                    if(placeholder.equals("{{result.statusCode}}"))
+                    {
+                        updatedLog = StringUtils.injectValue(updatedLog, "result.statusCode", testCase.result.get("statusCode"));
+                    }
+                    else if(placeholder.equals("{{result.body}}"))
+                    {
+                        updatedLog = StringUtils.injectValue(updatedLog, "result.body", testCase.result.get("body"));
+                    }
+                    else if(placeholder.equals("{{result.headers}}"))
+                    {
+                        updatedLog = StringUtils.injectValue(updatedLog, "result.headers", step.result.headers.toString());
+                    }
+                    if(placeholder.startsWith("{{result.headers."))
+                    {
+                        String[] headerVarParts = placeholder.split("\\.");
+                        String headerValue = step.result.headers.get(headerVarParts[headerVarParts.length - 1]);
+                        updatedLog = StringUtils.injectValue(updatedLog, placeholder.substring(2, placeholder.length() - 2), headerValue);
+                    }
                     for(Map.Entry<String, String> testCaseResultVar : testCase.result.entrySet())
                     {
                         if(testCaseResultVar.getKey().equals(placeholder.substring(2, placeholder.length() - 2).replace("result.", "")))

@@ -2,6 +2,7 @@ executor: executor2
 input:
   var1: null
   var2: null
+  url: null
 steps:
   - type: http
     method: POST
@@ -17,7 +18,7 @@ steps:
           }
         ]
       }
-    url: 'https://httpbin.org/post'
+    url: '{{input.url}}'
     assertions:
       - result.statusCode ShouldEqual 200
     log:

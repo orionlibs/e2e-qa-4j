@@ -21,7 +21,7 @@ class SetupExecutorsRunner
             {
                 if(executor.executor.equals(setupExecutor.type))
                 {
-                    Map<String, String> executorOutput = executorRunner.runExecutor(globalVariables, executor, executors);
+                    Map<String, String> executorOutput = executorRunner.runExecutor(globalVariables, executor, executors, null, null);
                     globalVariables.putAll(executorOutput);
                     break;
                 }

@@ -1,8 +1,14 @@
 package com.yapily.e2eqa4j.test_runner;
 
 import com.yapily.e2eqa4j.model.Executor;
+import com.yapily.e2eqa4j.model.TestSuite;
+import com.yapily.e2eqa4j.utils.StringUtils;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +18,83 @@ class ExecutorRunner
     @Autowired ExecutorStepRunner executorStepRunner;
 
 
-    Map<String, String> runExecutor(Map<String, String> globalVariables, Executor executor, List<Executor> executors)
+    Map<String, String> runExecutor(Map<String, String> globalVariables, Executor executor, List<Executor> executors, TestSuite.Testcase testCase, TestSuite.Step testCaseStep)
     {
         System.out.println("Running executor: " + executor.executor);
         Executor.StepResult lastStepResult = null;
         for(Executor.Step step : executor.steps)
         {
-            lastStepResult = executorStepRunner.runExecutorStep(this, executor, globalVariables, executors, step, lastStepResult);
+            lastStepResult = executorStepRunner.runExecutorStep(this, testCase, executor, globalVariables, executors, step, testCaseStep, lastStepResult);
         }
-        //set actual values in all executor.output
+        for(Entry<String, String> entry : executor.output.entrySet())
+        {
+            for(Map.Entry<String, String> globalVariable : globalVariables.entrySet())
+            {
+                StringUtils.injectValue(entry, globalVariable.getKey(), globalVariable.getValue());
+            }
+            List<String> placeholders2 = new ArrayList<>();
+            Pattern p2 = Pattern.compile("\\{\\{[^}]+\\}\\}");
+            Matcher m2 = p2.matcher(entry.getValue());
+            while(m2.find())
+            {
+                placeholders2.add(m2.group());
+            }
+            for(String placeholder : placeholders2)
+            {
+                if(placeholder.startsWith("{{result."))
+                {
+                    if(lastStepResult != null)
+                    {
+                        if(placeholder.equals("{{result.statusCode}}"))
+                        {
+                            StringUtils.injectValue(entry, "result.statusCode", Integer.toString(lastStepResult.statusCode));
+                        }
+                        else if(placeholder.equals("{{result.body}}"))
+                        {
+                            StringUtils.injectValue(entry, "result.body", lastStepResult.body);
+                        }
+                        else if(placeholder.equals("{{result.headers}}"))
+                        {
+                            StringUtils.injectValue(entry, "result.headers", lastStepResult.headers.toString());
+                        }
+                        if(placeholder.startsWith("{{result.headers."))
+                        {
+                            String[] headerVarParts = placeholder.split("\\.");
+                            String headerValue = lastStepResult.headers.get(headerVarParts[headerVarParts.length - 1]);
+                            StringUtils.injectValue(entry, placeholder.substring(2, placeholder.length() - 2), headerValue);
+                        }
+                        for(Map.Entry<String, String> testCaseResultVar : lastStepResult.result.entrySet())
+                        {
+                            if(testCaseResultVar.getKey().equals(placeholder.substring(2, placeholder.length() - 2).replace("result.", "")))
+                            {
+                                StringUtils.injectValue(entry, "result." + testCaseResultVar.getKey(), testCaseResultVar.getValue());
+                            }
+                        }
+                    }
+                }
+                else if(placeholder.startsWith("{{input."))
+                {
+                    for(Map.Entry<String, String> executorInputVar : executor.input.entrySet())
+                    {
+                        if(executorInputVar.getKey().equals(placeholder.substring(2, placeholder.length() - 2).replace("input.", "")))
+                        {
+                            StringUtils.injectValue(entry, "input." + executorInputVar.getKey(), executorInputVar.getValue());
+                        }
+                    }
+                }
+                else if(placeholder.indexOf(".") != -1)
+                {
+                    String[] keyParts = placeholder.split("\\.");
+                    for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())
+                    {
+                        if(keyParts.length == 2 && stepThatHasExecuted.getKey().equals(keyParts[0].substring(2)))
+                        {
+                            StringUtils.injectValue(entry, placeholder, stepThatHasExecuted.getValue().get(keyParts[1].substring(0, keyParts[1].length() - 2)));
+                        }
+                    }
+                }
+            }
+        }
         executor.output.forEach((k, v) -> System.out.println("Executor output var: " + k + " -> " + v));
         return executor.output;
     }

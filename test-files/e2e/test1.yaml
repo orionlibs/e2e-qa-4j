@@ -24,6 +24,7 @@ testcases:
         input:
           var1: '{{executor1.var1}}'
           var2: '{{executor1.var2}}'
+          url: "https://httpbin.org/post"
         vars:
           var3: '{{result.var3}}'
           var4: '{{result.var4}}'

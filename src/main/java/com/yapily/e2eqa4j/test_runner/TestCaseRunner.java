@@ -6,7 +6,6 @@ import com.yapily.e2eqa4j.model.TestSuite.Testcase;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +24,5 @@ class TestCaseRunner
             lastStepResult = testStepRunner.runStep(globalVariables, executors, testCase, step, lastStepResult);
         }
         TestLIVEData.stepNamesThatHaveExecuted.put(testCase.name, new HashMap<>(testCase.result));
-
     }
 }
