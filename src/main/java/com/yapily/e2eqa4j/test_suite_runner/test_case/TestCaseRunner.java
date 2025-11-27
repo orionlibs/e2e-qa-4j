@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestCaseRunner
+public class TestCaseRunner
 {
     @Autowired TestStepRunner testStepRunner;
 
 
-    void runTestCase(Map<String, String> globalVariables, List<Executor> executors, Testcase testCase)
+    public void runTestCase(Map<String, String> globalVariables, List<Executor> executors, Testcase testCase)
     {
         TestSuite.StepResult lastStepResult = null;
         for(TestSuite.Step step : testCase.steps)

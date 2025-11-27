@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
-class ExecutorOutputProcessor
+public class ExecutorOutputProcessor
 {
-    void process(Map<String, String> globalVariables, Executor executor, Executor.StepResult lastStepResult)
+    public void process(Map<String, String> globalVariables, Executor executor, Executor.StepResult lastStepResult)
     {
         for(Entry<String, String> entry : executor.output.entrySet())
         {

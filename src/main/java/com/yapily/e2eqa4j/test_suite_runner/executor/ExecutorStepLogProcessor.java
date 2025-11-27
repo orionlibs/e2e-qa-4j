@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
-class ExecutorStepLogProcessor
+public class ExecutorStepLogProcessor
 {
-    void process(Executor.Step step, Map<String, String> globalVariables, Executor executor)
+    public void process(Executor.Step step, Map<String, String> globalVariables, Executor executor)
     {
         for(String log : step.log)
         {

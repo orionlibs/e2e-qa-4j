@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestStepExecutorRunner
+public class TestStepExecutorRunner
 {
     @Autowired ExecutorRunner executorRunner;
 
 
-    void run(List<Executor> executors, Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables, Map<String, String> executorOutput)
+    public void run(List<Executor> executors, Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables, Map<String, String> executorOutput)
     {
         for(Executor executor : executors)
         {

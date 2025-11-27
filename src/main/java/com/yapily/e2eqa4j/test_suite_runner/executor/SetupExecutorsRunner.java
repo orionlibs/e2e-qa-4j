@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class SetupExecutorsRunner
+public class SetupExecutorsRunner
 {
     @Autowired ExecutorRunner executorRunner;
 
 
-    void runSetupExecutors(List<Executor> executors, TestSuite testSuite, Map<String, String> globalVariables)
+    public void runSetupExecutors(List<Executor> executors, TestSuite testSuite, Map<String, String> globalVariables)
     {
         for(TestSuite.Step setupExecutor : testSuite.setup.steps)
         {

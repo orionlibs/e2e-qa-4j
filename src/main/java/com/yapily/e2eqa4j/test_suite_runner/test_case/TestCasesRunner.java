@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestCasesRunner
+public class TestCasesRunner
 {
     @Autowired TestCaseRunner testCaseRunner;
 
 
-    void runTestCases(Map<String, String> globalVariables, TestSuite testSuite, List<Executor> executors)
+    public void runTestCases(Map<String, String> globalVariables, TestSuite testSuite, List<Executor> executors)
     {
         for(TestSuite.Testcase testCase : testSuite.testcases)
         {

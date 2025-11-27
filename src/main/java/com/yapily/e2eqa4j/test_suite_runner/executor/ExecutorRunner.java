@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class ExecutorRunner
+public class ExecutorRunner
 {
     @Autowired ExecutorStepRunner executorStepRunner;
     @Autowired ExecutorOutputProcessor executorOutputProcessor;
 
 
-    Map<String, String> runExecutor(Map<String, String> globalVariables, Executor executor, List<Executor> executors, TestSuite.Testcase testCase, TestSuite.Step testCaseStep)
+    public Map<String, String> runExecutor(Map<String, String> globalVariables, Executor executor, List<Executor> executors, TestSuite.Testcase testCase, TestSuite.Step testCaseStep)
     {
         System.out.println("Running executor: " + executor.executor);
         Executor.StepResult lastStepResult = null;

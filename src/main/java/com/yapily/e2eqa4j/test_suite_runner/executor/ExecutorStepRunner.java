@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class ExecutorStepRunner
+public class ExecutorStepRunner
 {
     @Autowired ExecutorStepInputPreparator executorStepInputPreparator;
     @Autowired ExecutorStepExecutorRunner executorStepExecutorRunner;
     @Autowired ExecutorStepLogProcessor executorStepLogProcessor;
 
 
-    Executor.StepResult runExecutorStep(ExecutorRunner executorRunner, TestSuite.Testcase testCase, Executor executor, Map<String, String> globalVariables, List<Executor> executors, Executor.Step step, TestSuite.Step testCaseStep, Executor.StepResult lastStepResult)
+    public Executor.StepResult runExecutorStep(ExecutorRunner executorRunner, TestSuite.Testcase testCase, Executor executor, Map<String, String> globalVariables, List<Executor> executors, Executor.Step step, TestSuite.Step testCaseStep, Executor.StepResult lastStepResult)
     {
         //step.vars.forEach((k, v) -> System.out.println("Step result var: " + k + " -> " + v));
         //step.assertions.forEach(k -> System.out.println("Assertion: " + k));

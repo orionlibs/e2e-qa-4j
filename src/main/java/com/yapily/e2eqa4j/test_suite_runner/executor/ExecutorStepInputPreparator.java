@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
-class ExecutorStepInputPreparator
+public class ExecutorStepInputPreparator
 {
-    void prepare(Map<String, String> globalVariables, Executor executor, Executor.Step step, Executor.StepResult lastStepResult)
+    public void prepare(Map<String, String> globalVariables, Executor executor, Executor.Step step, Executor.StepResult lastStepResult)
     {
         for(Map.Entry<String, String> entry : step.input.entrySet())
         {

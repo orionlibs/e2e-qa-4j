@@ -1,6 +1,6 @@
 package com.yapily.e2eqa4j.command.run_tests;
 
-import com.yapily.e2eqa4j.test_suite_runner.TestRunner;
+import com.yapily.e2eqa4j.test_suite_runner.TestSuiteRunner;
 import com.yapily.e2eqa4j.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class RunTestsCommand
 {
     @Autowired PathOfTestsProcessor pathOfTestsProcessor;
     @Autowired PathOfTestLibraryProcessor pathOfTestLibraryProcessor;
-    @Autowired TestRunner testRunner;
+    @Autowired TestSuiteRunner testSuiteRunner;
 
 
     @ShellMethod("Run given test file or tests in the given path")
@@ -33,7 +33,7 @@ public class RunTestsCommand
         System.out.println("Using library files: " + libraryFiles);
         if(pathOfTestsProcessor.isPathAFile())
         {
-            testRunner.runTest(pathOfTestsOrTestFile, libraryFiles, globalVariables);
+            testSuiteRunner.runTest(pathOfTestsOrTestFile, libraryFiles, globalVariables);
         }
         else
         {
@@ -49,7 +49,7 @@ public class RunTestsCommand
         testFiles.forEach(testFile -> {
             try
             {
-                testRunner.runTest(testFile, libraryFiles, globalVariables);
+                testSuiteRunner.runTest(testFile, libraryFiles, globalVariables);
             }
             catch(IOException e)
             {

@@ -20,13 +20,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
-class ExecutorStepExecutorRunner
+public class ExecutorStepExecutorRunner
 {
     @Autowired HTTPExecutor httpExecutor;
     @Autowired HTTPHeaderService httpHeaderService;
 
 
-    void run(ExecutorRunner executorRunner, List<Executor> executors, Executor executor, Executor.Step step, TestSuite.Step testCaseStep, TestSuite.Testcase testCase, Map<String, String> globalVariables, Executor.StepResult lastStepResult)
+    public void run(ExecutorRunner executorRunner, List<Executor> executors, Executor executor, Executor.Step step, TestSuite.Step testCaseStep, TestSuite.Testcase testCase, Map<String, String> globalVariables, Executor.StepResult lastStepResult)
     {
         for(Executor executorToRun : executors)
         {

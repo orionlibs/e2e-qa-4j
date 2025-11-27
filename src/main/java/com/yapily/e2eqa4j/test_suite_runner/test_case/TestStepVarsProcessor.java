@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestStepVarsProcessor
+public class TestStepVarsProcessor
 {
-    void process(Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables, TestSuite.StepResult lastStepResult)
+    public void process(Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables, TestSuite.StepResult lastStepResult)
     {
         for(Map.Entry<String, String> entry : step.vars.entrySet())
         {

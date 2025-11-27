@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestRunner
+public class TestSuiteRunner
 {
     @Autowired TestCasesRunner testCasesRunner;
     @Autowired SetupExecutorsRunner setupExecutorsRunner;

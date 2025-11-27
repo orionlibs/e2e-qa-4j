@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestStepLogProcessor
+public class TestStepLogProcessor
 {
-    void process(Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables)
+    public void process(Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables)
     {
         for(String log : step.log)
         {

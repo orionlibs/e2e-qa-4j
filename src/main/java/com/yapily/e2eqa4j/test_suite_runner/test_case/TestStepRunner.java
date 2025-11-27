@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestStepRunner
+public class TestStepRunner
 {
     @Autowired TestStepInputPreparator testStepInputPreparator;
     @Autowired TestStepExecutorRunner testStepExecutorRunner;
@@ -19,7 +19,7 @@ class TestStepRunner
     @Autowired TestStepLogProcessor testStepLogProcessor;
 
 
-    TestSuite.StepResult runStep(Map<String, String> globalVariables, List<Executor> executors, TestSuite.Testcase testCase, Step step, TestSuite.StepResult lastStepResult)
+    public TestSuite.StepResult runStep(Map<String, String> globalVariables, List<Executor> executors, TestSuite.Testcase testCase, Step step, TestSuite.StepResult lastStepResult)
     {
         testStepInputPreparator.prepare(step, globalVariables, lastStepResult);
         System.out.println("Step input vars: " + step.input);

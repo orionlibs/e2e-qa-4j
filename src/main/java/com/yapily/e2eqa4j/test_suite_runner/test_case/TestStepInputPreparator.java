@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 
 @Component
-class TestStepInputPreparator
+public class TestStepInputPreparator
 {
-    void prepare(Step step, Map<String, String> globalVariables, TestSuite.StepResult lastStepResult)
+    public void prepare(Step step, Map<String, String> globalVariables, TestSuite.StepResult lastStepResult)
     {
         for(Map.Entry<String, String> entry : step.input.entrySet())
         {
