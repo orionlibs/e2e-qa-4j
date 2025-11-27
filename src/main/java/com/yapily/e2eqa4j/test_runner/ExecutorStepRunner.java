@@ -29,12 +29,12 @@ class ExecutorStepRunner
         step.vars.forEach((k, v) -> System.out.println("Step result var: " + k + " -> " + v));
         step.assertions.forEach(k -> System.out.println("Assertion: " + k));
         step.input.putAll(globalVariables);
-        for(Map.Entry<String, Object> entry : step.input.entrySet())
+        for(Map.Entry<String, String> entry : step.input.entrySet())
         {
-            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), entry1.getValue()));
+            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectStringValue(entry, entry1.getKey(), entry1.getValue()));
             if(lastStepResult != null && lastStepResult.result != null)
             {
-                lastStepResult.result.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), (String)entry1.getValue()));
+                lastStepResult.result.entrySet().forEach(entry1 -> StringUtils.injectStringValue(entry, entry1.getKey(), (String)entry1.getValue()));
             }
         }
         System.out.println("Step input vars: " + step.input);

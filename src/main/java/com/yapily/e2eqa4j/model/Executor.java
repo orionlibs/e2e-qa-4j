@@ -8,7 +8,7 @@ import java.util.Map;
 public class Executor
 {
     public String executor;
-    public Map<String, Object> input = new HashMap<>();
+    public Map<String, String> input = new HashMap<>();
     public List<Step> steps = new ArrayList<>();
     public Map<String, String> output = new HashMap<>();
 
@@ -18,7 +18,7 @@ public class Executor
         public String type;
         public Map<String, String> vars = new HashMap<>();
         public List<String> assertions = new ArrayList<>();
-        public Map<String, Object> input = new HashMap<>();
+        public Map<String, String> input = new HashMap<>();
         public String method;
         public String url;
         public Map<String, String> headers = new HashMap<>();
@@ -34,6 +34,6 @@ public class Executor
         public int statusCode;
         public Map<String, String> headers = new HashMap<>();
         public String stdout;
-        public Map<String, Object> result = new HashMap<>();
+        public Map<String, String> result = new HashMap<>();
     }
 }

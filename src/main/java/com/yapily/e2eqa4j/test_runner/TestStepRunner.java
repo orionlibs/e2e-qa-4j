@@ -26,14 +26,14 @@ class TestStepRunner
         System.out.println("Step input vars: " + step.input);
         System.out.println("Running step: " + step.type);
         //set actual values in all step.input
-        for(Map.Entry<String, Object> entry : step.input.entrySet())
+        for(Map.Entry<String, String> entry : step.input.entrySet())
         {
-            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), entry1.getValue()));
+            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectStringValue(entry, entry1.getKey(), entry1.getValue()));
             if(lastStepResult != null)
             {
                 if(lastStepResult.output != null)
                 {
-                    lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), entry1.getValue()));
+                    lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectStringValue(entry, entry1.getKey(), entry1.getValue()));
                 }
             }
             String[] keyParts = entry.getValue().toString().split("\\.");
@@ -41,9 +41,12 @@ class TestStepRunner
             {
                 if(stepThatHasExecuted.getKey().equals(keyParts[0].substring(2)))
                 {
-                    StringUtils.injectObjectValue(entry, entry.getValue().toString(), stepThatHasExecuted.getValue().get(keyParts[1]));
+                    StringUtils.injectStringValue(entry, entry.getValue().toString(), stepThatHasExecuted.getValue().get(keyParts[1]));
                 }
             }
+            entry.setValue(entry.getValue()
+                            .replace("\\{", "")
+                            .replace("\\}", ""));
         }
         step.input.forEach((k, v) -> System.out.println("Updated step input var: " + k + " -> " + v));
         Map<String, String> executorOutput = new HashMap<>();
@@ -52,18 +55,33 @@ class TestStepRunner
             if(executor.executor.equals(step.type))
             {
                 executor.input.putAll(step.input);
-                for(Map.Entry<String, Object> entry : executor.input.entrySet())
+                for(Map.Entry<String, String> entry : executor.input.entrySet())
+                {
+                    entry.setValue(entry.getValue()
+                                    .replace("\\{", "")
+                                    .replace("\\}", ""));
+                }
+                for(Map.Entry<String, String> entry : executor.input.entrySet())
                 {
                     if(lastStepResult != null)
                     {
                         if(lastStepResult.output != null)
                         {
-                            lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectObjectValue(entry, entry1.getKey(), entry1.getValue()));
+                            lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectStringValue(entry, entry1.getKey(), entry1.getValue()));
                         }
                     }
+                    entry.setValue(entry.getValue()
+                                    .replace("\\{", "")
+                                    .replace("\\}", ""));
                 }
                 System.out.println("Executor input vars: " + executor.input);
                 executorOutput.putAll(executorRunner.runExecutor(globalVariables, executor, executors));
+                for(Map.Entry<String, String> entry : executorOutput.entrySet())
+                {
+                    entry.setValue(entry.getValue()
+                                    .replace("\\{", "")
+                                    .replace("\\}", ""));
+                }
                 break;
             }
         }
@@ -82,6 +100,9 @@ class TestStepRunner
                     lastStepResult.output.entrySet().forEach(entry1 -> StringUtils.injectStringValue(entry, entry1.getKey(), entry1.getValue()));
                 }
             }
+            entry.setValue(entry.getValue()
+                            .replace("\\{", "")
+                            .replace("\\}", ""));
             testCase.result.putAll(step.result.output);
             String[] keyParts = entry.getValue().split("\\.");
             for(Entry<String, Map<String, String>> stepThatHasExecuted : TestLIVEData.stepNamesThatHaveExecuted.entrySet())

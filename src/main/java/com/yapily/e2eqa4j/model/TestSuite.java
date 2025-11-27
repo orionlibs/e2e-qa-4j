@@ -31,7 +31,7 @@ public class TestSuite
         public String type;
         public Map<String, String> vars = new HashMap<>();
         public List<String> assertions = new ArrayList<>();
-        public Map<String, Object> input = new HashMap<>();
+        public Map<String, String> input = new HashMap<>();
         public List<String> log = new ArrayList<>();
         public StepResult result = new StepResult();
     }
