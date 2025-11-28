@@ -12,7 +12,7 @@ public class RunTestsCommandInputProcessor
 {
     public String path;
     public String libDir;
-    public Map<String, String> vars = new HashMap<>();
+    public Map<String, String> globalVars = new HashMap<>();
 
 
     public void process(List<String> tokens) throws IOException
@@ -61,7 +61,8 @@ public class RunTestsCommandInputProcessor
                     if(value != null)
                     {
                         String[] varNameAndValue = value.split("=");
-                        vars.put(varNameAndValue[0], varNameAndValue[1]);
+                        //globalVars.put("{{" + varNameAndValue[0] + "}}", varNameAndValue[1]);
+                        globalVars.put(varNameAndValue[0], varNameAndValue[1]);
                     }
                     break;
                 default:

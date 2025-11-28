@@ -1,6 +1,6 @@
 package com.yapily.e2eqa4j.utils;
 
-import com.yapily.e2eqa4j.test_suite_runner.test_case.TestLIVEData;
+import com.yapily.e2eqa4j.TestLIVEData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

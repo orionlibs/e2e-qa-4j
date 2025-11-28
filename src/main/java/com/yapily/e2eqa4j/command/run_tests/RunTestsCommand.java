@@ -7,11 +7,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.stereotype.Component;
 
-@ShellComponent
+@Component
 public class RunTestsCommand
 {
     @Autowired PathOfTestsProcessor pathOfTestsProcessor;
@@ -19,10 +17,9 @@ public class RunTestsCommand
     @Autowired TestSuiteRunner testSuiteRunner;
 
 
-    @ShellMethod("Run given test file or tests in the given path")
-    public void runTests(@ShellOption() String path,
-                    @ShellOption() String testLibraryPath,
-                    @ShellOption() Map<String, String> globalVariables) throws IOException
+    public void runTests(String path,
+                    String testLibraryPath,
+                    Map<String, String> globalVariables) throws IOException
     {
         System.out.println("Running tests: " + path);
         String currentDir = System.getProperty("user.dir");

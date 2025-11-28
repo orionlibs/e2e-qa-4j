@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.shell.command.annotation.CommandScan;
 import tools.jackson.databind.SerializationFeature;
 import tools.jackson.databind.cfg.DateTimeFeature;
 import tools.jackson.databind.json.JsonMapper;
@@ -12,7 +11,6 @@ import tools.jackson.dataformat.yaml.YAMLMapper;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.yapily.e2eqa4j"})
-@CommandScan(basePackages = {"com.yapily.e2eqa4j.command"})
 public class E2EQA4JApplication
 {
     static void main(String[] args)

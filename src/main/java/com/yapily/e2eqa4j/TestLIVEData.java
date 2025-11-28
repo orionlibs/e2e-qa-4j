@@ -1,4 +1,4 @@
-package com.yapily.e2eqa4j.test_suite_runner.test_case;
+package com.yapily.e2eqa4j;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,10 +7,12 @@ public class TestLIVEData
 {
     public static final Map<String, Map<String, String>> stepNamesThatHaveExecuted;
     public static final Map<String, Map<String, String>> executorStepNamesThatHaveExecuted;
+    public static final Map<String, String> allVars;
 
     static
     {
         stepNamesThatHaveExecuted = new ConcurrentHashMap<>();
         executorStepNamesThatHaveExecuted = new ConcurrentHashMap<>();
+        allVars = new ConcurrentHashMap<>();
     }
 }

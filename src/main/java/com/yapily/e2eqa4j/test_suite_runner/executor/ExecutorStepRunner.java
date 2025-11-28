@@ -2,7 +2,7 @@ package com.yapily.e2eqa4j.test_suite_runner.executor;
 
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.model.TestSuite;
-import com.yapily.e2eqa4j.test_suite_runner.test_case.TestLIVEData;
+import com.yapily.e2eqa4j.TestLIVEData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

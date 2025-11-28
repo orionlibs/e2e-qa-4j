@@ -31,7 +31,7 @@ public class RunnerEntryPoint implements ApplicationRunner
                 {
                     tokens.remove(0);
                     runTestsCommandInputProcessor.process(tokens);
-                    runTestsCommand.runTests(runTestsCommandInputProcessor.path, runTestsCommandInputProcessor.libDir, runTestsCommandInputProcessor.vars);
+                    runTestsCommand.runTests(runTestsCommandInputProcessor.path, runTestsCommandInputProcessor.libDir, runTestsCommandInputProcessor.globalVars);
                 }
             }
         }
