@@ -123,15 +123,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.springframework.shell</groupId>
-                <artifactId>spring-shell-dependencies</artifactId>
-                <version>3.4.1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-
-            <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>6.0.1</version>
@@ -147,13 +138,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
             <version>4.0.0</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter</artifactId>
-            <version>3.4.1</version>
         </dependency>
 
 
