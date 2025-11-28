@@ -7,12 +7,12 @@ public class TestLIVEData
 {
     public static final Map<String, Map<String, String>> stepNamesThatHaveExecuted;
     public static final Map<String, Map<String, String>> executorStepNamesThatHaveExecuted;
-    public static final Map<String, String> allVars;
+    public static final Map<String, String> globalVariables;
 
     static
     {
         stepNamesThatHaveExecuted = new ConcurrentHashMap<>();
         executorStepNamesThatHaveExecuted = new ConcurrentHashMap<>();
-        allVars = new ConcurrentHashMap<>();
+        globalVariables = new ConcurrentHashMap<>();
     }
 }

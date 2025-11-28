@@ -1,5 +1,6 @@
 package com.yapily.e2eqa4j.test_suite_runner.executor;
 
+import com.yapily.e2eqa4j.TestLIVEData;
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExecutorOutputProcessor
 {
-    public void process(Map<String, String> globalVariables, Executor executor, Executor.StepResult lastStepResult)
+    public void process(Executor executor, Executor.StepResult lastStepResult)
     {
         for(Entry<String, String> entry : executor.output.entrySet())
         {
-            for(Map.Entry<String, String> globalVariable : globalVariables.entrySet())
+            for(Map.Entry<String, String> globalVariable : TestLIVEData.globalVariables.entrySet())
             {
                 StringUtils.injectValue(entry, globalVariable.getKey(), globalVariable.getValue());
             }

@@ -5,7 +5,6 @@ import com.yapily.e2eqa4j.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +17,7 @@ public class RunTestsCommand
 
 
     public void runTests(String path,
-                    String testLibraryPath,
-                    Map<String, String> globalVariables) throws IOException
+                    String testLibraryPath) throws IOException
     {
         System.out.println("Running tests: " + path);
         String currentDir = System.getProperty("user.dir");
@@ -30,23 +28,23 @@ public class RunTestsCommand
         System.out.println("Using library files: " + libraryFiles);
         if(pathOfTestsProcessor.isPathAFile())
         {
-            testSuiteRunner.runTest(pathOfTestsOrTestFile, libraryFiles, globalVariables);
+            testSuiteRunner.runTest(pathOfTestsOrTestFile, libraryFiles);
         }
         else
         {
-            runTestsInPath(globalVariables, pathOfTestsOrTestFile, libraryFiles);
+            runTestsInPath(pathOfTestsOrTestFile, libraryFiles);
         }
     }
 
 
-    private void runTestsInPath(Map<String, String> globalVariables, String pathOfTestsOrTestFile, List<File> libraryFiles) throws IOException
+    private void runTestsInPath(String pathOfTestsOrTestFile, List<File> libraryFiles) throws IOException
     {
         List<File> testFiles = FileUtils.getFilesInPathAndSubpaths(pathOfTestsOrTestFile);
         System.out.println("Running test files: " + testFiles);
         testFiles.forEach(testFile -> {
             try
             {
-                testSuiteRunner.runTest(testFile, libraryFiles, globalVariables);
+                testSuiteRunner.runTest(testFile, libraryFiles);
             }
             catch(IOException e)
             {

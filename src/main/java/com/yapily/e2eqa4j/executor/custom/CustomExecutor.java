@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomExecutor
 {
-    public void run(ExecutorRunner executorRunner, Executor executorToRun, List<Executor> executors, Executor.Step step, TestSuite.Step testCaseStep, TestSuite.Testcase testCase, Map<String, String> globalVariables)
+    public void run(ExecutorRunner executorRunner, Executor executorToRun, List<Executor> executors, Executor.Step step, TestSuite.Step testCaseStep, TestSuite.Testcase testCase)
     {
-        Map<String, String> nestedExecutorOutput = executorRunner.runExecutor(globalVariables, executorToRun, executors, testCase, testCaseStep);
+        Map<String, String> nestedExecutorOutput = executorRunner.runExecutor(executorToRun, executors, testCase, testCaseStep);
         step.result.result.putAll(nestedExecutorOutput);
         if(testCase != null)
         {

@@ -1,5 +1,6 @@
 package com.yapily.e2eqa4j.test_suite_runner.executor;
 
+import com.yapily.e2eqa4j.TestLIVEData;
 import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.model.TestSuite;
 import java.util.List;
@@ -13,7 +14,7 @@ public class SetupExecutorsRunner
     @Autowired ExecutorRunner executorRunner;
 
 
-    public void runSetupExecutors(List<Executor> executors, TestSuite testSuite, Map<String, String> globalVariables)
+    public void runSetupExecutors(List<Executor> executors, TestSuite testSuite)
     {
         for(TestSuite.Step setupExecutor : testSuite.setup.steps)
         {
@@ -21,8 +22,8 @@ public class SetupExecutorsRunner
             {
                 if(executor.executor.equals(setupExecutor.type))
                 {
-                    Map<String, String> executorOutput = executorRunner.runExecutor(globalVariables, executor, executors, null, null);
-                    globalVariables.putAll(executorOutput);
+                    Map<String, String> executorOutput = executorRunner.runExecutor(executor, executors, null, null);
+                    TestLIVEData.globalVariables.putAll(executorOutput);
                     break;
                 }
             }

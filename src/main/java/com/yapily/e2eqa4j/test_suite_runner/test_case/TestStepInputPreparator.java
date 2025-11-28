@@ -1,5 +1,6 @@
 package com.yapily.e2eqa4j.test_suite_runner.test_case;
 
+import com.yapily.e2eqa4j.TestLIVEData;
 import com.yapily.e2eqa4j.model.TestSuite;
 import com.yapily.e2eqa4j.model.TestSuite.Step;
 import com.yapily.e2eqa4j.utils.StringUtils;
@@ -9,11 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestStepInputPreparator
 {
-    public void prepare(Step step, Map<String, String> globalVariables, Map<String, String> testSuiteVars, TestSuite.StepResult lastStepResult)
+    public void prepare(Step step, Map<String, String> testSuiteVars, TestSuite.StepResult lastStepResult)
     {
         for(Map.Entry<String, String> entry : step.input.entrySet())
         {
-            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
+            TestLIVEData.globalVariables.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
             testSuiteVars.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
             if(lastStepResult != null)
             {

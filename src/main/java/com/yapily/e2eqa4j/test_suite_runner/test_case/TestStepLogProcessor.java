@@ -1,6 +1,7 @@
 package com.yapily.e2eqa4j.test_suite_runner.test_case;
 
 import com.yapily.e2eqa4j.Logger;
+import com.yapily.e2eqa4j.TestLIVEData;
 import com.yapily.e2eqa4j.model.TestSuite;
 import com.yapily.e2eqa4j.model.TestSuite.Step;
 import com.yapily.e2eqa4j.utils.StringUtils;
@@ -14,12 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestStepLogProcessor
 {
-    public void process(Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables)
+    public void process(Step step, TestSuite.Testcase testCase)
     {
         for(String log : step.log)
         {
             String updatedLog = log;
-            for(Map.Entry<String, String> globalVariable : globalVariables.entrySet())
+            for(Map.Entry<String, String> globalVariable : TestLIVEData.globalVariables.entrySet())
             {
                 updatedLog = StringUtils.injectValue(updatedLog, globalVariable.getKey(), globalVariable.getValue());
             }

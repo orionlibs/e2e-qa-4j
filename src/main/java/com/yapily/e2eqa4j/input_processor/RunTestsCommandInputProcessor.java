@@ -1,10 +1,9 @@
 package com.yapily.e2eqa4j.input_processor;
 
+import com.yapily.e2eqa4j.TestLIVEData;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +11,6 @@ public class RunTestsCommandInputProcessor
 {
     public String path;
     public String libDir;
-    public Map<String, String> globalVars = new HashMap<>();
 
 
     public void process(List<String> tokens) throws IOException
@@ -61,8 +59,7 @@ public class RunTestsCommandInputProcessor
                     if(value != null)
                     {
                         String[] varNameAndValue = value.split("=");
-                        //globalVars.put("{{" + varNameAndValue[0] + "}}", varNameAndValue[1]);
-                        globalVars.put(varNameAndValue[0], varNameAndValue[1]);
+                        TestLIVEData.globalVariables.put(varNameAndValue[0], varNameAndValue[1]);
                     }
                     break;
                 default:

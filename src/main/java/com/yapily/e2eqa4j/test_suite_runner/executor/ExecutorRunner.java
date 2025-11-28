@@ -14,15 +14,15 @@ public class ExecutorRunner
     @Autowired ExecutorOutputProcessor executorOutputProcessor;
 
 
-    public Map<String, String> runExecutor(Map<String, String> globalVariables, Executor executor, List<Executor> executors, TestSuite.Testcase testCase, TestSuite.Step testCaseStep)
+    public Map<String, String> runExecutor(Executor executor, List<Executor> executors, TestSuite.Testcase testCase, TestSuite.Step testCaseStep)
     {
         System.out.println("Running executor: " + executor.executor);
         Executor.StepResult lastStepResult = null;
         for(Executor.Step step : executor.steps)
         {
-            lastStepResult = executorStepRunner.runExecutorStep(this, testCase, executor, globalVariables, executors, step, testCaseStep, lastStepResult);
+            lastStepResult = executorStepRunner.runExecutorStep(this, testCase, executor, executors, step, testCaseStep, lastStepResult);
         }
-        executorOutputProcessor.process(globalVariables, executor, lastStepResult);
+        executorOutputProcessor.process(executor, lastStepResult);
         executor.output.forEach((k, v) -> System.out.println("Executor output var: " + k + " -> " + v));
         return executor.output;
     }

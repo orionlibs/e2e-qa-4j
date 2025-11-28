@@ -1,8 +1,8 @@
 package com.yapily.e2eqa4j.test_suite_runner.executor;
 
 import com.yapily.e2eqa4j.Logger;
-import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.TestLIVEData;
+import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExecutorStepLogProcessor
 {
-    public void process(Executor.Step step, Map<String, String> globalVariables, Executor executor)
+    public void process(Executor.Step step, Executor executor)
     {
         for(String log : step.log)
         {
             String updatedLog = log;
-            for(Map.Entry<String, String> globalVariable : globalVariables.entrySet())
+            for(Map.Entry<String, String> globalVariable : TestLIVEData.globalVariables.entrySet())
             {
                 updatedLog = StringUtils.injectValue(updatedLog, globalVariable.getKey(), globalVariable.getValue());
             }

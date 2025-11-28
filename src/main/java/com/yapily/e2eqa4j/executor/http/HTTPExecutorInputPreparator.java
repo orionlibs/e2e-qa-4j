@@ -1,7 +1,7 @@
 package com.yapily.e2eqa4j.executor.http;
 
-import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.TestLIVEData;
+import com.yapily.e2eqa4j.model.Executor;
 import com.yapily.e2eqa4j.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +20,11 @@ public class HTTPExecutorInputPreparator
     @Autowired HTTPHeaderService httpHeaderService;
 
 
-    public void prepare(Executor.Step step, Map<String, String> globalVariables, Executor executor)
+    public void prepare(Executor.Step step, Executor executor)
     {
         for(Map.Entry<String, String> entry : step.headers.entrySet())
         {
-            globalVariables.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
+            TestLIVEData.globalVariables.entrySet().forEach(entry1 -> StringUtils.injectValue(entry, entry1.getKey(), entry1.getValue()));
             List<String> placeholders = new ArrayList<>();
             Pattern p = Pattern.compile("\\{\\{[^}]+\\}\\}");
             Matcher m = p.matcher(entry.getValue());
@@ -61,7 +61,7 @@ public class HTTPExecutorInputPreparator
         }
         System.out.println("Step headers: " + step.headers);
         String updatedBody = step.body;
-        for(Map.Entry<String, String> globalVariable : globalVariables.entrySet())
+        for(Map.Entry<String, String> globalVariable : TestLIVEData.globalVariables.entrySet())
         {
             updatedBody = StringUtils.injectValue(updatedBody, globalVariable.getKey(), globalVariable.getValue());
         }
@@ -101,7 +101,7 @@ public class HTTPExecutorInputPreparator
         step.body = updatedBody;
         System.out.println("Step request body: " + step.body);
         String updatedURL = step.url;
-        for(Map.Entry<String, String> globalVariable : globalVariables.entrySet())
+        for(Map.Entry<String, String> globalVariable : TestLIVEData.globalVariables.entrySet())
         {
             updatedURL = StringUtils.injectValue(updatedURL, globalVariable.getKey(), globalVariable.getValue());
         }

@@ -15,7 +15,7 @@ public class TestStepExecutorRunner
     @Autowired ExecutorRunner executorRunner;
 
 
-    public void run(List<Executor> executors, Step step, TestSuite.Testcase testCase, Map<String, String> globalVariables, Map<String, String> executorOutput)
+    public void run(List<Executor> executors, Step step, TestSuite.Testcase testCase, Map<String, String> executorOutput)
     {
         for(Executor executor : executors)
         {
@@ -32,7 +32,7 @@ public class TestStepExecutorRunner
                     }
                 }
                 //executor output can be used by the test step that called the executor
-                executorOutput.putAll(executorRunner.runExecutor(globalVariables, executor, executors, testCase, step));
+                executorOutput.putAll(executorRunner.runExecutor(executor, executors, testCase, step));
                 break;
             }
         }
