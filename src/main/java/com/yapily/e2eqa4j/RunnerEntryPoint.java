@@ -32,9 +32,9 @@ public class RunnerEntryPoint implements ApplicationRunner
                     tokens.remove(0);
                     runTestsCommandInputProcessor.process(tokens);
                     runTestsCommand.runTests(runTestsCommandInputProcessor.path, runTestsCommandInputProcessor.libDir);
+                    System.exit(0);
                 }
             }
         }
-        System.exit(0);
     }
 }

@@ -1,0 +1,52 @@
+package com.yapily.e2eqa4j.model;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Executor2
+{
+    public YAMLNode yaml;
+    public String executor;
+    public Map<String, String> input = new HashMap<>();
+    public List<Step> steps = new ArrayList<>();
+    public Map<String, String> output = new HashMap<>();
+
+
+    public Executor2()
+    {
+    }
+
+
+    public Executor2(YAMLNode yaml)
+    {
+        this.yaml = yaml;
+    }
+
+
+    public static class Step
+    {
+        public String name;
+        public String type;
+        public Map<String, String> vars = new HashMap<>();
+        public List<String> assertions = new ArrayList<>();
+        public Map<String, String> input = new HashMap<>();
+        public String method;
+        public String url;
+        public Map<String, String> headers = new HashMap<>();
+        public String body;
+        public List<String> log = new ArrayList<>();
+        public StepResult result = new StepResult();
+    }
+
+
+    public static class StepResult
+    {
+        public String body;
+        public int statusCode;
+        public Map<String, String> headers = new HashMap<>();
+        public String stdout;
+        public Map<String, String> result = new HashMap<>();
+    }
+}

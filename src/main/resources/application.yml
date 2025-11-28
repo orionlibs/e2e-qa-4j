@@ -1,6 +1,11 @@
 spring:
-  shell:
-    interactive:
-      enabled: false
-    noninteractive:
-      enabled: false
+  config:
+    activate:
+      on-profile: "!test"
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test

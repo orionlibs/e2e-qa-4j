@@ -1,0 +1,43 @@
+name: "Test1"
+setup:
+  steps:
+    - type: executor3
+vars:
+  testVar1: "testVar1Value"
+  alpha:
+    beta:
+      gamma:
+        delta: deltaValue
+array:
+  - one: "oneValue"
+  - two: "twoValue"
+  - three: "threeValue"
+    four: "fourValue"
+testcases:
+  - name: executor1
+    steps:
+      - type: executor1
+        input:
+          input1: "input1var {{institutionId}} and {{testVar1}}"
+        vars:
+          var1: '{{result.output2}}'
+          var2: '{{result.uuid2}}'
+        assertions:
+          - '{{result.var1}} ShouldEqual hello'
+        log:
+          - 'status code is {{result.statusCode}}'
+          - 'output2 is {{result.output2}}'
+
+  - name: executor2
+    steps:
+      - type: executor2
+        input:
+          var1: '{{executor1.var1}}'
+          var2: '{{executor1.var2}}'
+          url: "https://httpbin.org/post"
+        vars:
+          var3: '{{result.var3}}'
+          var4: '{{result.var4}}'
+        log:
+          - 'log1 is {{executor1.var2}}'
+          - 'log2 is {{var4}}'

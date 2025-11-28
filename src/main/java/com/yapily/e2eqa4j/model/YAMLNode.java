@@ -20,7 +20,7 @@ public class YAMLNode
     }
 
 
-    private YAMLNode(Object value)
+    public YAMLNode(Object value)
     {
         this.value = value;
     }
@@ -66,18 +66,56 @@ public class YAMLNode
     }
 
 
-    public Optional<Object> getDottedValue(YAMLNode root, String path)
+    public Optional<Object> getByDottedPath(String path)
     {
-        YAMLNode cur = root;
-        for(String p : path.split("\\."))
+        String[] parts = path.split("\\.");
+        YAMLNode current = this;
+        for(String part : parts)
         {
-            cur = cur.getChild(p).orElse(null);
-            if(cur == null)
+            // ---- Case 1: part is a number => list index access
+            if(part.matches("\\d+"))
             {
-                return Optional.empty();
+                int index = Integer.parseInt(part);
+                // ensure current is a leaf holding a List
+                Optional<Object> valueOpt = current.getValue();
+                if(valueOpt.isEmpty())
+                {
+                    return Optional.empty();
+                }
+                Object value = valueOpt.get();
+                if(!(value instanceof List<?> list))
+                {
+                    return Optional.empty();
+                }
+                if(index < 0 || index >= list.size())
+                {
+                    return Optional.empty();
+                }
+                Object element = list.get(index);
+                // element may be a YamlNode (map) or scalar
+                if(element instanceof YAMLNode yn)
+                {
+                    current = yn;
+                }
+                else
+                {
+                    // scalar leaf reached; if this is not the last part => fail
+                    return (part.equals(parts[parts.length - 1]))
+                                    ? Optional.of(element)
+                                    : Optional.empty();
+                }
+            }
+            // ---- Case 2: part is a normal map key
+            else
+            {
+                current = current.getChild(part).orElse(null);
+                if(current == null)
+                {
+                    return Optional.empty();
+                }
             }
         }
-        return cur.getValue();
+        return current.getValue();
     }
 
 

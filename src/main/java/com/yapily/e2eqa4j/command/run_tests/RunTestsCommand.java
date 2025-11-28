@@ -16,8 +16,7 @@ public class RunTestsCommand
     @Autowired TestSuiteRunner testSuiteRunner;
 
 
-    public void runTests(String path,
-                    String testLibraryPath) throws IOException
+    public void runTests(String path, String testLibraryPath) throws IOException
     {
         //System.out.println("Running tests: " + path);
         String currentDir = System.getProperty("user.dir");

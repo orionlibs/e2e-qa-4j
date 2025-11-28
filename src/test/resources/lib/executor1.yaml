@@ -1,0 +1,32 @@
+executor: executor1
+input:
+  input1: null
+steps:
+  - type: http
+    name: executor1Step1
+    method: POST
+    headers:
+      Content-Type: 'application/json;charset=UTF-8'
+    body: >-
+      {
+        "key1": "{{input.input1}} ----- {{institutionId}}",
+        "key2": false,
+        "key3": [
+          {
+            "uuid": "abcdefg"
+          }
+        ]
+      }
+    url: 'https://httpbin.org/post'
+    assertions:
+      - result.statusCode ShouldEqual 200
+    log:
+      - 'status code is {{result.statusCode}}'
+      - 'test executor log'
+output:
+  uuid: '{{result.body.json.key3.1.uuid}}'
+  output1: '{{result.body.json.key1}}'
+  uuid2: 'uuid2Value'
+  output2: 'output2Value'
+  statusCode: '{{result.statusCode}}'
+  body: '{{result.body}}'
