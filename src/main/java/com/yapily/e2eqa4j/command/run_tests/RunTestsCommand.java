@@ -19,13 +19,13 @@ public class RunTestsCommand
     public void runTests(String path,
                     String testLibraryPath) throws IOException
     {
-        System.out.println("Running tests: " + path);
+        //System.out.println("Running tests: " + path);
         String currentDir = System.getProperty("user.dir");
-        System.out.println("Current working directory: " + currentDir);
+        //System.out.println("Current working directory: " + currentDir);
         String pathOfTestsOrTestFile = pathOfTestsProcessor.processPath(path, currentDir);
         String pathOfLibrary = pathOfTestLibraryProcessor.processLibraryPath(testLibraryPath, currentDir);
         List<File> libraryFiles = FileUtils.getFilesInPathAndSubpaths(pathOfLibrary);
-        System.out.println("Using library files: " + libraryFiles);
+        //System.out.println("Using library files: " + libraryFiles);
         if(pathOfTestsProcessor.isPathAFile())
         {
             testSuiteRunner.runTest(pathOfTestsOrTestFile, libraryFiles);
@@ -40,7 +40,7 @@ public class RunTestsCommand
     private void runTestsInPath(String pathOfTestsOrTestFile, List<File> libraryFiles) throws IOException
     {
         List<File> testFiles = FileUtils.getFilesInPathAndSubpaths(pathOfTestsOrTestFile);
-        System.out.println("Running test files: " + testFiles);
+        //System.out.println("Running test files: " + testFiles);
         testFiles.forEach(testFile -> {
             try
             {

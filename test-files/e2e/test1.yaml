@@ -18,7 +18,6 @@ testcases:
         log:
           - 'status code is {{result.statusCode}}'
           - 'output2 is {{result.output2}}'
-          - 'test executor info'
 
   - name: executor2
     steps:

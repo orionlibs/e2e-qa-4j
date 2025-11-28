@@ -23,15 +23,15 @@ public class TestStepRunner
     public TestSuite.StepResult runStep(Map<String, String> testSuiteVars, List<Executor> executors, TestSuite.Testcase testCase, Step step, TestSuite.StepResult lastStepResult)
     {
         testStepInputPreparator.prepare(step, testSuiteVars, lastStepResult);
-        System.out.println("Step input vars: " + step.input);
+        //System.out.println("Step input vars: " + step.input);
         Map<String, String> executorOutput = new HashMap<>();
         testStepExecutorRunner.run(executors, step, testCase, executorOutput);
         step.result.output.putAll(executorOutput);
         TestLIVEData.stepNamesThatHaveExecuted.put(testCase.name + "." + step.type, new HashMap<>(step.result.output));
         testStepVarsProcessor.process(step, testCase, lastStepResult);
         testCase.result.putAll(step.result.output);
-        step.result.output.forEach((k, v) -> System.out.println("step result output var: " + k + " -> " + v));
-        step.vars.forEach((k, v) -> System.out.println("step var: " + k + " -> " + v));
+        //step.result.output.forEach((k, v) -> System.out.println("step result output var: " + k + " -> " + v));
+        //step.vars.forEach((k, v) -> System.out.println("step var: " + k + " -> " + v));
         testStepLogProcessor.process(step, testCase);
         return step.result;
     }

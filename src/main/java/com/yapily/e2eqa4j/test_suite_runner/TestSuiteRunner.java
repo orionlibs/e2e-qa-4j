@@ -31,7 +31,7 @@ public class TestSuiteRunner
         {
             TestSuite testSuite = yamlUtils.loadTestSuite(isr);
             setupExecutorsRunner.runSetupExecutors(executors, testSuite);
-            testSuite.vars.forEach((k, v) -> TestLIVEData.globalVariables.put(k, v));
+            TestLIVEData.globalVariables.putAll(testSuite.vars);
             testCasesRunner.runTestCases(testSuite, executors);
         }
     }
