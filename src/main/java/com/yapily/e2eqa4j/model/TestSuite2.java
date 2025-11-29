@@ -3,7 +3,6 @@ package com.yapily.e2eqa4j.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,12 +10,14 @@ import java.util.Optional;
 public class TestSuite2
 {
     private static final String TESTS_KEY = "testcases";
+    private static final String ARRAY_KEY = "array";
     private static final String VARS_KEY = "vars";
     public YAMLNode yaml;
     public String name;
     public List<Testcase> testcases;
     public Setup setup;
     public Map<String, String> vars = new HashMap<>();
+    public List<Map<String, String>> array = new ArrayList<>();
 
 
     public TestSuite2()
@@ -32,82 +33,73 @@ public class TestSuite2
 
     public Map<String, String> getVars()
     {
-        return yaml.getChild(VARS_KEY)
-                        .flatMap(n -> n.getValue().map(v -> v))
-                        .map(v -> {
-                            Map<String, String> result = new LinkedHashMap<>();
-                            // Case: vars is a List
-                            if(v instanceof List<?> list)
-                            {
-                                for(Object elem : list)
-                                {
-                                    // Element already converted to YAMLNode (most common when element is a map)
-                                    /*if(elem instanceof YAMLNode node)
-                                    {
-                                        // common shape: { name: ..., value: ... }
-                                        String name = node.getChild("name").flatMap(YAMLNode::getValue).map(Object::toString).orElse(null);
-                                        String val = node.getChild("value").flatMap(YAMLNode::getValue).map(Object::toString).orElse(null);
-                                        if(name != null && val != null)
-                                        {
-                                            result.put(name, val);
-                                            continue;
-                                        }
-                                        // alternative shape: single-key map inside list element: - foo: bar
-                                        Map<String, YAMLNode> children = node.getChildren();
-                                        if(children.size() == 1)
-                                        {
-                                            Map.Entry<String, YAMLNode> entry = children.entrySet().iterator().next();
-                                            String k = entry.getKey();
-                                            String vv = entry.getValue().getValue().map(Object::toString).orElse(null);
-                                            if(k != null && vv != null)
-                                            {
-                                                result.put(k, vv);
-                                                continue;
-                                            }
-                                        }
-                                        // As a last attempt, if the node itself holds a scalar value and has an identifying child key
-                                        // (eg. node has children and a scalar value) - skip unless you have a clear mapping scheme.
-                                    }*/
-                                    // Element is a plain Map (defensive)
-                                    /*else */if(elem instanceof Map<?, ?> mapElem)
-                                    {
-                                        for(Map.Entry<?, ?> me : mapElem.entrySet())
-                                        {
-                                            String k = String.valueOf(me.getKey());
-                                            Object ov = me.getValue();
-                                            result.put(k, ov == null ? null : ov.toString());
-                                        }
-                                    }
-                                    // Element is scalar string like "foo=bar"
-                                    /*else if(elem instanceof String s)
-                                    {
-                                        int eq = s.indexOf('=');
-                                        if(eq > 0)
-                                        {
-                                            String k = s.substring(0, eq).trim();
-                                            String vv = s.substring(eq + 1).trim();
-                                            if(!k.isEmpty())
-                                            {
-                                                result.put(k, vv);
-                                            }
-                                        }
-                                    }*/
-                                    // other scalar forms are ignored
-                                }
-                            }
-                            // Case: vars is a Map at top level
-                            else if(v instanceof Map<?, ?> mapTop)
-                            {
-                                for(Map.Entry<?, ?> me : mapTop.entrySet())
-                                {
-                                    String k = String.valueOf(me.getKey());
-                                    Object ov = me.getValue();
-                                    result.put(k, ov == null ? null : ov.toString());
-                                }
-                            }
-                            return Collections.unmodifiableMap(result);
-                        })
-                        .orElse(Collections.emptyMap());
+        Map<String, String> result = new HashMap<>();
+        yaml.getChild(VARS_KEY).ifPresent(varsNode -> {
+            flattenToMap(varsNode, "", result);
+        });
+        vars.forEach((k, v) -> result.put(k, v));
+        return result;
+    }
+
+
+    public Map<String, String> getArray()
+    {
+        Map<String, String> arrayData = new HashMap<>();
+        yaml.getChild(ARRAY_KEY).ifPresent(arrayNode -> {
+            flattenToMap(arrayNode, ARRAY_KEY, arrayData);
+        });
+        arrayData.forEach((k, v) -> array.add(Map.of(k, v)));
+        return arrayData;
+    }
+
+
+    private void flattenToMap(YAMLNode node, String prefix, Map<String, String> result)
+    {
+        // First check if this node itself has a value (could be a list)
+        node.getValue().ifPresent(value -> {
+            if(value instanceof List<?> list)
+            {
+                // Handle list
+                for(int i = 0; i < list.size(); i++)
+                {
+                    Object element = list.get(i);
+                    String indexedKey = prefix.isEmpty() ? String.valueOf(i) : prefix + "." + i;
+                    if(element instanceof YAMLNode yamlNode)
+                    {
+                        // List element is a map/object - recurse into it
+                        flattenToMap(yamlNode, indexedKey, result);
+                    }
+                    else
+                    {
+                        // List element is a scalar
+                        result.put(indexedKey, String.valueOf(element));
+                    }
+                }
+                return; // Don't process children after handling list
+            }
+        });
+        // Process child nodes (for maps)
+        for(Map.Entry<String, YAMLNode> entry : node.getChildren().entrySet())
+        {
+            String key = entry.getKey();
+            YAMLNode childNode = entry.getValue();
+            String fullKey = prefix.isEmpty() ? key : prefix + "." + key;
+            if(childNode.isLeaf())
+            {
+                // It's a leaf node, get its value
+                childNode.getValue().ifPresent(value -> {
+                    if(!(value instanceof List<?>))
+                    {
+                        result.put(fullKey, String.valueOf(value));
+                    }
+                });
+            }
+            else
+            {
+                // It's a nested node, recurse
+                flattenToMap(childNode, fullKey, result);
+            }
+        }
     }
 
 

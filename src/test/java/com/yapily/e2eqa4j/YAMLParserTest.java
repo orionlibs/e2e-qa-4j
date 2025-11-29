@@ -33,6 +33,10 @@ class YAMLParserTest
         //System.out.println(">>>>>>>>>" + resource.getContentAsString(StandardCharsets.UTF_8));
         YAMLNode root = yamlMapper.readValue(resource.getInputStream(), YAMLNode.class);
         TestSuite2 testSuite2 = new TestSuite2(root);
+        System.out.println(">>>>>>>>" + testSuite2.getVars());
+        System.out.println(">>>>>>>>" + testSuite2.getArray());
+        System.out.println(">>>>>>>>" + testSuite2.array);
+        //System.out.println(">>>>>>>>" + testSuite2.yaml.getChildren());
         //assertThat(testSuite.yaml.getByDottedPath("vars.alpha.beta.gamma.delta").orElse("no name").toString()).isEqualTo("deltaValue");
     }
 }

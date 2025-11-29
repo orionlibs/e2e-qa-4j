@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+//@ToString
 public class YAMLNode
 {
     private final Map<String, YAMLNode> children = new LinkedHashMap<>();
@@ -57,11 +58,13 @@ public class YAMLNode
                 }
             }
             children.put(key, new YAMLNode(converted));
+            value = converted;
         }
         else
         {
             // scalar (string, number, boolean, null, etc.)
             children.put(key, new YAMLNode(val));
+            value = val;
         }
     }
 
