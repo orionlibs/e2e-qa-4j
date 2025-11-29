@@ -1,20 +1,22 @@
 package com.yapily.e2eqa4j.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class TestSuite2
 {
+    private static final String NAME_KEY = "name";
     private static final String TESTS_KEY = "testcases";
     private static final String ARRAY_KEY = "array";
     private static final String VARS_KEY = "vars";
+    private static final String SETUP_KEY = "setup";
     public YAMLNode yaml;
     public String name;
-    public List<Testcase> testcases;
+    public List<Testcase> testcases = new ArrayList<>();
     public Setup setup;
     public Map<String, String> vars = new HashMap<>();
     public List<Map<String, String>> array = new ArrayList<>();
@@ -28,6 +30,18 @@ public class TestSuite2
     public TestSuite2(YAMLNode yaml)
     {
         this.yaml = yaml;
+    }
+
+
+    public String getName()
+    {
+        String nameTemp = "no test suite name";
+        nameTemp = yaml.getChild(NAME_KEY)
+                        .flatMap(YAMLNode::getValue)
+                        .map(String::valueOf)
+                        .orElse(nameTemp);
+        name = nameTemp;
+        return nameTemp;
     }
 
 
@@ -50,6 +64,48 @@ public class TestSuite2
         });
         arrayData.forEach((k, v) -> array.add(Map.of(k, v)));
         return arrayData;
+    }
+
+
+    public Setup getSetup()
+    {
+        Map<String, String> result = new LinkedHashMap<>();
+        yaml.getChild(SETUP_KEY).ifPresent(setupNode -> {
+            flattenToMap(setupNode, "setup", result);
+        });
+        Setup setupTemp = new Setup();
+        for(Map.Entry<String, String> entry : result.entrySet())
+        {
+            Step stepTemp = new Step();
+            stepTemp.type = entry.getValue();
+            setupTemp.steps.add(stepTemp);
+        }
+        return setupTemp;
+    }
+
+
+    public List<Testcase> getTestCases()
+    {
+        List<Testcase> testcases = new ArrayList<>();
+        //Map<String, String> data = new HashMap<>();
+        yaml.getChild(TESTS_KEY).ifPresent(node -> {
+            Optional<Object> z = node.getValue();
+            if(z.isPresent())
+            {
+                List<YAMLNode> tests = (List)z.get();
+                for(YAMLNode test : tests)
+                {
+                    String testCaseName = (String)((YAMLNode)test.getChildren().get("name").getValue().get()).getValue().get();
+                    List<YAMLNode> testCaseSteps = (List<YAMLNode>)((YAMLNode)test.getChildren().get("steps").getValue().get()).getValue().get();
+                    for(YAMLNode testStep : testCaseSteps)
+                    {
+
+                    }
+                }
+            }
+        });
+        //data.forEach((k, v) -> array.add(Map.of(k, v)));
+        return testcases;
     }
 
 
@@ -103,104 +159,9 @@ public class TestSuite2
     }
 
 
-    /**
-     * Returns the list of test-case nodes under the "tests" key.
-     * Each element is returned as a YamlNode (if element was scalar it will be wrapped).
-     */
-    public List<YAMLNode> getTestCases()
-    {
-        return yaml.getChild(TESTS_KEY)
-                        .flatMap(n -> n.getValue().map(v -> v))
-                        .map(v -> {
-                            if(v instanceof List<?>)
-                            {
-                                List<?> raw = (List<?>)v;
-                                List<YAMLNode> out = new ArrayList<>(raw.size());
-                                for(Object e : raw)
-                                {
-                                    if(e instanceof YAMLNode)
-                                    {
-                                        out.add((YAMLNode)e);
-                                    }
-                                    else
-                                    {
-                                        // wrap scalars or other objects into a YamlNode holding the value
-                                        out.add(new YAMLNode(e));
-                                    }
-                                }
-                                return out;
-                            }
-                            return Collections.<YAMLNode>emptyList();
-                        })
-                        .orElse(Collections.emptyList());
-    }
-
-
-    /**
-     * Find a test case by its 'name' scalar property.
-     * Returns the first match or empty if not found.
-     */
-    public Optional<YAMLNode> findTestByName(String name)
-    {
-        return getTestCases().stream()
-                        .filter(tc -> tc.getChild("name")
-                                        .flatMap(YAMLNode::getValue)
-                                        .map(Object::toString)
-                                        .map(name::equals)
-                                        .orElse(false))
-                        .findFirst();
-    }
-
-
-    /**
-     * Add a test case node to the tests list (creates the list if necessary).
-     */
-    public void addTestCase(YAMLNode testCase)
-    {
-        // access the 'tests' child (create if missing)
-        Map<String, YAMLNode> children = yaml.getChildren();
-        YAMLNode testsNode = children.get(TESTS_KEY);
-        if(testsNode == null)
-        {
-            // create a new list wrapper node and put it as 'tests'
-            testsNode = new YAMLNode(new ArrayList<>());
-            children.put(TESTS_KEY, testsNode);
-        }
-        // testsNode.value is expected to be a List<Object>
-        Object maybeList = testsNode.getValue().orElse(null);
-        if(maybeList instanceof List<?>)
-        {
-            @SuppressWarnings("unchecked")
-            List<Object> list = (List<Object>)maybeList;
-            list.add(testCase);
-        }
-        else
-        {
-            // not a list for some reason: replace with a new list containing existing value and the new node
-            List<Object> newList = new ArrayList<>();
-            if(maybeList != null)
-            {
-                newList.add(maybeList);
-            }
-            newList.add(testCase);
-            // replace the testsNode's internal value
-            // we must access testsNode's internal state; use reflection-less approach:
-            children.put(TESTS_KEY, new YAMLNode(newList));
-        }
-    }
-
-
     public static class Setup
     {
-        public List<Step> steps;
-    }
-
-
-    public static class Testcase
-    {
-        public String name;
-        public List<Step> steps;
-        public Map<String, String> result = new HashMap<>();
+        public List<Step> steps = new ArrayList<>();
     }
 
 
@@ -212,6 +173,14 @@ public class TestSuite2
         public Map<String, String> input = new HashMap<>();
         public List<String> log = new ArrayList<>();
         public StepResult result = new StepResult();
+    }
+
+
+    public static class Testcase
+    {
+        public String name;
+        public List<Step> steps = new ArrayList<>();
+        public Map<String, String> result = new HashMap<>();
     }
 
 
