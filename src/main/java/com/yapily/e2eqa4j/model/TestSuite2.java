@@ -87,7 +87,6 @@ public class TestSuite2
     public List<Testcase> getTestCases()
     {
         List<Testcase> testcases = new ArrayList<>();
-        //Map<String, String> data = new HashMap<>();
         yaml.getChild(TESTS_KEY).ifPresent(node -> {
             Optional<Object> z = node.getValue();
             if(z.isPresent())
@@ -104,7 +103,6 @@ public class TestSuite2
                 }
             }
         });
-        //data.forEach((k, v) -> array.add(Map.of(k, v)));
         return testcases;
     }
 
